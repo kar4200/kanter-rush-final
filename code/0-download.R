@@ -1,21 +1,7 @@
 # load libraries
 library(tidyverse)
 
-# download case data from NY Times website
-url = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
-case_data_raw = read_csv(url)
-
-# write raw data to file
-write_tsv(x = case_data_raw, file = "data/raw/case_data_raw.tsv")
-
-# download health rankings data from the web 
-# (omitted from this template)
-
-nsduh = load("/Users/katierush/Desktop/NSDUH_2019.RData")
-nsduh = data.frame(PUF2019_100920)
-colnames(nsduh)
-View(nsduh)
-library(tidyverse)
-nsduh %>% 
-  select(cigever)
-View
+# download datasets
+health_data <- read_csv("~/Desktop/Stat471/stat-471-fall-2021/kanter-rush-final/data/raw/measure_data.csv")
+feature_data <- read_csv("~/Desktop/Stat471/stat-471-fall-2021/kanter-rush-final/data/raw/additional_features.csv")
+demographic_data <- read_csv("~/Desktop/Stat471/stat-471-fall-2021/kanter-rush-final/data/raw/county_complete.csv")
