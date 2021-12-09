@@ -27,18 +27,34 @@ health_data_clean = health_data %>%
     -Population,
     -`Cohort Size`,
     -`Labor Force`,
+    -`Annual Average Violent Crimes`,
     `Income Ratio`, 
-    `Presence of violation`) 
+    `Presence of violation`) %>%  
+  rename(fips = FIPS)
 
 View(health_data_clean)
 
 # clean additional features 
 feature_data_clean = feature_data %>% 
-  select
+  select(-starts_with(c("95%", "#")), 
+         -ends_with(c("(Black)","(White)","(Hispanic)",   
+                      "Mortality", "Mortality Rate", "Ratio")), 
+         -`% Disconnected Youth`, 
+         -(c(`Segregation Index`, 
+             `Segregation index`, 
+             `Homicide Rate`, 
+             `Firearm Fatalities Rate`, 
+             `Other PCP Rate`))) %>% 
+  rename(fips = FIPS)
 
+View(feature_data_clean)
 
 # join county health data with case data
-covid_data = inner_join(county_health_data, case_data, by = "fips")
+mental_health = inner_join(health_data_clean, 
+                        feature_data_clean, 
+                        demographic_data_clean, by = c("fips", "State", "County"))
+
+View(mental_health)
 
 # write cleaned data to file
-write_tsv(covid_data, file = "data/clean/covid_data.tsv")
+write_csv(mental_health, file = "data/clean/mental_health.csv")
