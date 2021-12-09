@@ -2,27 +2,40 @@
 library(lubridate)
 library(tidyverse)
 
-# load raw case data
-case_data_raw = read_tsv(file = "data/raw/case_data_raw.tsv")
+# clean demographic data 
+demographic_data_clean = demographic_data %>%
+  select(fips,                        
+         state,
+         name,
+         ends_with("2019"),
+         -households_2019)          
 
-# clean case data
-case_data = case_data_raw %>%
-  na.omit() %>%                               # remove NA values
-  filter(year(date) == 2020) %>%              # keep data from 2020 
-  group_by(fips, county, state) %>%           # group by county
-  summarise(total_cases = sum(cases),         # total cases per county
-            total_deaths = sum(deaths)) %>%   # total deaths per county
-  ungroup() %>%
-  mutate(case_fatality_rate =                 # case_fatality_rate = 
-           total_deaths/total_cases*100) %>%  #  total_deaths/total_cases
-  select(-total_cases, -total_deaths)         # remove intermediate variables
+View(demographic_data_clean)
 
-# load raw county health data
-# (omitted from this template)
+# clean health data
+health_data_clean = health_data %>%
+  mutate(`Presence of violation` = 
+           ifelse(`Presence of violation` == "Yes", 1, 0)) %>% 
+  select(-starts_with("95%"),
+    -starts_with("Quartile"),
+    -starts_with("#"),
+    -ends_with("(Black)"),
+    -ends_with("(White)"),
+    -ends_with("(Hispanic)"),
+    -ends_with("Ratio"),
+    -Unreliable,
+    -Population,
+    -`Cohort Size`,
+    -`Labor Force`,
+    `Income Ratio`, 
+    `Presence of violation`) 
 
-# clean county health data
-# (omitted from this template, reading from file instead)
-county_health_data = read_tsv("data/raw/county_health_data.tsv")
+View(health_data_clean)
+
+# clean additional features 
+feature_data_clean = feature_data %>% 
+  select
+
 
 # join county health data with case data
 covid_data = inner_join(county_health_data, case_data, by = "fips")
