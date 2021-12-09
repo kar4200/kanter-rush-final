@@ -8,7 +8,8 @@ demographic_data_clean = demographic_data %>%
          state,
          name,
          ends_with("2019"),
-         -households_2019)          
+         -households_2019)
+  
 
 View(demographic_data_clean)
 
@@ -30,7 +31,8 @@ health_data_clean = health_data %>%
     -`Annual Average Violent Crimes`,
     `Income Ratio`, 
     `Presence of violation`) %>%  
-  rename(fips = FIPS)
+  rename(fips = FIPS, state = State, name = County) %>% 
+  mutate(fips = as.double(fips))
 
 View(health_data_clean)
 
@@ -45,16 +47,24 @@ feature_data_clean = feature_data %>%
              `Homicide Rate`, 
              `Firearm Fatalities Rate`, 
              `Other PCP Rate`))) %>% 
-  rename(fips = FIPS)
+  rename(fips = FIPS, state = State, name = County) %>% 
+  mutate(fips = as.double(fips))
 
 View(feature_data_clean)
 
 # join county health data with case data
 mental_health = inner_join(health_data_clean, 
                         feature_data_clean, 
-                        demographic_data_clean, by = c("fips", "State", "County"))
+                        by = c("fips", "state", "name"))
+
+mental_health = left_join(mental_health, 
+                           demographic_data_clean, 
+                           by = c("fips", "state")) %>% 
+  select(-name.y)
+
 
 View(mental_health)
+View(colSums(is.na(mental_health)))
 
 # write cleaned data to file
 write_csv(mental_health, file = "data/clean/mental_health.csv")
