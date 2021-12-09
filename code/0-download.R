@@ -10,3 +10,12 @@ write_tsv(x = case_data_raw, file = "data/raw/case_data_raw.tsv")
 
 # download health rankings data from the web 
 # (omitted from this template)
+
+nsduh = load("/Users/katierush/Desktop/NSDUH_2019.RData")
+nsduh = data.frame(PUF2019_100920)
+colnames(nsduh)
+View(nsduh)
+library(tidyverse)
+nsduh %>% 
+  select(cigever)
+View
