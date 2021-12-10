@@ -1,11 +1,14 @@
 # load libraries
 library(tidyverse)
-library(glmnetUtils)                    # to run ridge and lasso
+library(glmnetUtils)                              # to run ridge and lasso
 library(pROC)   
 source("code/functions/plot_glmnet.R")            # for lasso/ridge trace plots
 
 # read in the training data
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
+
+# read in the testing data
+mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # running a logistic regression
 glm_fit = glm(mentally_unhealthy ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
@@ -47,6 +50,8 @@ fnr = 22 / (22 + 220)
 # ROC curve
 roc_data = roc(mental_health_test %>% pull(mentally_unhealthy), 
                fitted_probabilities) 
+# error message isn't warning? just showing what it is doing?
+
 tibble(FPR = 1-roc_data$specificities,
        TPR = roc_data$sensitivities) %>%
   ggplot(aes(x = FPR, y = TPR)) + 
@@ -54,6 +59,8 @@ tibble(FPR = 1-roc_data$specificities,
   geom_abline(slope = 1, linetype = "dashed") +
   geom_point(x = fpr, y = 1-fnr, colour = "red") +
   theme_bw()
+
+# need to save this into github results folder 
 
 # print the AUC
 roc_data$auc
