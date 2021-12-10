@@ -1,9 +1,30 @@
 # load libraries
+library(tidyverse)
 library(glmnetUtils)                    # to run ridge and lasso
+library(pROC)   
 source("code/functions/plot_glmnet.R")            # for lasso/ridge trace plots
 
 # read in the training data
-covid_train = read_tsv("data/clean/covid_train.tsv")
+mental_health_train = read_csv("data/clean/mental_health_train.csv")
+
+# running a logistic regression
+glm_fit = glm(mentally_unhealthy ~ . -fips -state -name -mentally_unhealthy_days, 
+              family = "binomial",
+              data = mental_health_train)
+
+summary(glm_fit)
+
+mental_health_test2 = mental_health_test %>%  
+  select(-housing_two_unit_structures)
+## extracting elements of the fit
+coef(glm_fit)
+
+# extracting the fitted probabilities 
+fitted_probabilities = predict(glm_fit, 
+                               newdata = mental_health_test2,
+                               type = "response")   
+
+head(fitted_probabilities)
 
 # run ridge regression
 set.seed(1)
