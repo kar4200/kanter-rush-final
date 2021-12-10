@@ -8,64 +8,52 @@ source("code/functions/plot_glmnet.R")            # for lasso/ridge trace plots
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
 
 # running a logistic regression
-glm_fit = glm(mentally_unhealthy ~ . -fips -state -name -mentally_unhealthy_days, 
+glm_fit = glm(mentally_unhealthy ~ . -mentally_unhealthy_days, 
               family = "binomial",
               data = mental_health_train)
 
 summary(glm_fit)
 
-mental_health_test2 = mental_health_test %>%  
-  select(-housing_two_unit_structures)
 ## extracting elements of the fit
 coef(glm_fit)
 
 # extracting the fitted probabilities 
 fitted_probabilities = predict(glm_fit, 
-                               newdata = mental_health_test2,
+                               newdata = mental_health_test,
                                type = "response")   
 
 head(fitted_probabilities)
 
-# run ridge regression
-set.seed(1)
-ridge_fit = cv.glmnet(case_fatality_rate ~ . - state - county - fips,   
-                      alpha = 0,                 
-                      nfolds = 10,               
-                      data = covid_train)
+# make predictions 
+predictions = as.numeric(fitted_probabilities > 0.5)
+head(predictions)
 
-# save the ridge fit object
-save(ridge_fit, file = "results/ridge_fit.Rda")
+# evaluating the classifier 
+mental_health_test = mental_health_test %>% 
+  mutate(predicted_mental_health = predictions)
 
-# run lasso regression
-set.seed(1)
-lasso_fit = cv.glmnet(case_fatality_rate ~ . - state - county - fips,   
-                      alpha = 1,                 
-                      nfolds = 10,               
-                      data = covid_train)
+# then calculate misclassification rate
+mental_health_test %>% 
+  summarise(mean(mentally_unhealthy != predicted_mental_health))
 
-# save the lasso fit object
-save(lasso_fit, file = "results/lasso_fit.Rda")
+# confusion matrix 
+mental_health_test %>% 
+  select(mentally_unhealthy, predicted_mental_health) %>%
+  table()
 
-# create lasso CV plot
-png(width = 6, 
-    height = 4,
-    res = 300,
-    units = "in", 
-    filename = "results/lasso-cv-plot.png")
-plot(lasso_fit)
-dev.off()
+fpr = 
 
-# create lasso trace plot
-p = plot_glmnet(lasso_fit, covid_train, features_to_plot = 6)
-ggsave(filename = "results/lasso-trace-plot.png", 
-       plot = p, 
-       device = "png", 
-       width = 6, 
-       height = 4)
+# ROC curve
+roc_data = roc(mental_health_test %>% pull(mentally_unhealthy), 
+               fitted_probabilities) 
+tibble(FPR = 1-roc_data$specificities,
+       TPR = roc_data$sensitivities) %>%
+  ggplot(aes(x = FPR, y = TPR)) + 
+  geom_line() + 
+  geom_abline(slope = 1, linetype = "dashed") +
+  geom_point(x = fpr, y = 1-fnr, colour = "red") +
+  theme_bw()
 
-# extract features selected by lasso and their coefficients
-beta_hat_std = extract_std_coefs(lasso_fit, covid_train)
-beta_hat_std %>%
-  filter(coefficient != 0) %>%
-  arrange(desc(abs(coefficient))) %>% 
-  write_tsv("results/lasso-features-table.tsv")
+# print the AUC
+roc_data$auc
+
