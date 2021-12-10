@@ -14,7 +14,7 @@ mental_health = read_csv("data/clean/mental_health_clean.csv")
 # pick features and explore relationship with mentally_unhealthy response
 # heatmap 
 
-# create histogram of mentally unhealthy days
+# create histogram of case fatality rate
 # save the mean
 mean <- mean(mental_health$mentally_unhealthy_days)
 
@@ -36,8 +36,6 @@ ggsave(filename = "results/response-histogram.png",
        width = 5, 
        height = 3)
 
-# correlation plot hgidsg
-
 # examine top 10 counties by case fatality rate
 covid_data %>% 
   select(county, state, case_fatality_rate) %>%
@@ -45,7 +43,8 @@ covid_data %>%
   head(10) %>%
   write_tsv("results/top-10-counties-data.tsv")
 
-# create a heatmap of mentally unhealthy days for cleaned dataset
+# create a heatmap of case fatality rate across the U.S.
+View(mental_health)
 p2 = map_data("county") %>%
   as_tibble() %>% 
   left_join(mental_health %>% 
@@ -58,19 +57,11 @@ p2 = map_data("county") %>%
   ggplot() + 
   geom_polygon(data=map_data("state"), 
                aes(x=long, y=lat, group=group),
-               color="black", fill=NA, size = 1, alpha = .3) + 
+               color="black", fill=NA,  size = 1, alpha = .3) + 
   geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
-  scale_fill_gradient(low = "blue", high = "red") 
-
-ggsave(filename = "results/map-clean.png", 
-       plot = p2, 
-       device = "png", 
-       width = 7, 
-       height = 4)
-
-# create a heatmap of mentally unhealthy days for original health dataset
-health_data_clean <- read_csv("data/clean/health_data_clean.csv")
+  scale_fill_gradient(low = "blue", high = "red") +
+  theme_void()
 
 p3 = map_data("county") %>%
   as_tibble() %>% 
@@ -84,14 +75,14 @@ p3 = map_data("county") %>%
   ggplot() + 
   geom_polygon(data=map_data("state"), 
                aes(x=long, y=lat, group=group),
-               color="black", fill=NA,size = 1, alpha = .3) + 
+               color="black", fill=NA,  size = 1, alpha = .3) + 
   geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
-  scale_fill_gradient(low = "blue", high = "red")
+  scale_fill_gradient(low = "blue", high = "red") 
 
-ggsave(filename = "results/map-all.png", 
-       plot = p3, 
+p3
+ggsave(filename = "results/response-map.png", 
+       plot = p, 
        device = "png", 
        width = 7, 
        height = 4)
-
