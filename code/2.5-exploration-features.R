@@ -16,7 +16,7 @@ p4 = ggcorrplot(cor(health_outcomes),
                 hc.order = TRUE, 
                 type = "lower",
                 lab = TRUE,
-                lab_size = 3,
+                lab_size = 4,
                 ggtheme = ggplot2::theme_bw())
 
 ggsave(filename = "results/response-health_outcomes.png", 
@@ -38,7 +38,7 @@ p5 = ggcorrplot(cor(health_behavior),
                 hc.order = TRUE, 
                 type = "lower",
                 lab = TRUE,
-                lab_size = 3,
+                lab_size = 2,
                 ggtheme = ggplot2::theme_bw())
 
 ggsave(filename = "results/response-health_behavior.png", 
