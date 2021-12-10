@@ -4,10 +4,10 @@ library(cowplot)                        # for side by side plots
 library(lubridate)                      # for dealing with dates
 library(maps)                           # for creating maps
 library(tidyverse)
-library()
 
 # read in the cleaned data
 mental_health = read_csv("data/clean/mental_health_clean.csv")
+health_total = read_csv("data/clean/health_data_clean.csv")
 
 # to do:
 # pick features and explore relationship with mentally_unhealthy response
@@ -34,14 +34,6 @@ ggsave(filename = "results/response-histogram.png",
        width = 5, 
        height = 3)
 
-# examine top 10 counties by case fatality rate
-covid_data %>% 
-  select(county, state, case_fatality_rate) %>%
-  arrange(desc(case_fatality_rate)) %>%
-  head(10) %>%
-  write_tsv("results/top-10-counties-data.tsv")
-
-# create a heatmap of case fatality rate across the U.S.
 # create a heatmap of mentally unhealthy days for cleaned dataset
 p2 = map_data("county") %>%
   as_tibble() %>% 
@@ -61,9 +53,15 @@ p2 = map_data("county") %>%
   scale_fill_gradient(low = "blue", high = "red") +
   theme_void()
 
+ggsave(filename = "results/map-clean.png", 
+       plot = p2, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
 p3 = map_data("county") %>%
   as_tibble() %>% 
-  left_join(health_data_clean %>% 
+  left_join(health_total %>% 
               rename(region = state, 
                      subregion = name,
                      `Mentally Unhealthy Days` = `Mentally Unhealthy Days`) %>% 
@@ -76,14 +74,13 @@ p3 = map_data("county") %>%
                color="black", fill=NA,  size = 1, alpha = .3) + 
   geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
-  scale_fill_gradient(low = "blue", high = "red") 
+  scale_fill_gradient(low = "blue", high = "red") +
+  theme_void()
 
-p3
-ggsave(filename = "results/response-map.png", 
-       plot = p, 
+ggsave(filename = "results/map-total.png", 
+       plot = p3, 
        device = "png", 
        width = 7, 
-       height = 4)
        height = 4)
 
 # create heatmap of highest mentally unhappy days 
@@ -138,7 +135,7 @@ ggsave(filename = "results/north-dakota.png",
        height = 4)
 
 # examine top 10 counties with lowest mentally unhealthy days
-mental_health_clean %>%
+mental_health %>%
   arrange(mentally_unhealthy_days) %>%
   select(state, name, mentally_unhealthy_days) %>%
   head(10) %>%
@@ -149,7 +146,7 @@ mental_health_clean %>%
   save_kable("low-days.pdf")
 
 # examine top 10 counties with highest mentally unhealthy days
-mental_health_clean %>%
+mental_health %>%
   arrange(desc(mentally_unhealthy_days)) %>%
   select(state, name, mentally_unhealthy_days) %>%
   head(10) %>%
@@ -158,3 +155,5 @@ mental_health_clean %>%
         col.names = c("State", "County", "Mentally Unhealthy Days"),
         caption = "Top 10 counties with highest mentally unhealthy days") %>%
   save_kable("high-days.pdf")
+
+# need to figure out how to save table #s differently (both Table 1 right now)

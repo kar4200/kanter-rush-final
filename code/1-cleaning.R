@@ -70,7 +70,8 @@ mental_health_clean = mental_health %>%
             `20th Percentile Income`, `% Frequent Physical Distress`, `% Uninsured...56`, 
             `% Uninsured...60`, Population)) %>% 
   na.omit() %>% 
-  rename(name = name.x, prevent_hosp_rate = `Preventable Hosp. Rate`)
+  rename(name = name.x, prevent_hosp_rate = `Preventable Hosp. Rate`,
+         perc_long_commute_drives_alone = `% Long Commute - Drives Alone`)
 
 # table to determine which columns to remove 
 colSums(is.na(mental_health))

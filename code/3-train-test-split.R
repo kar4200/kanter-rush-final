@@ -9,7 +9,7 @@ mental_health_removed = mental_health %>%
   select(-fips, -state, -name)
 
 # split into train and test (80% for train and 20% for test)
-n = nrow(mental_health)
+n = nrow(mental_health_removed)
 train_samples = sample(1:n, round(0.8*n))
 
 # training set
