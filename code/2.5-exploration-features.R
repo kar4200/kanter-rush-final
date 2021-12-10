@@ -15,7 +15,8 @@ p4 = ggcorrplot(cor(health_outcomes),
                 colors = c("blue", "white", "red"), 
                 hc.order = TRUE, 
                 type = "lower",
-                lab = FALSE,
+                lab = TRUE,
+                lab_size = 3,
                 ggtheme = ggplot2::theme_bw())
 
 ggsave(filename = "results/response-health_outcomes.png", 
@@ -36,7 +37,8 @@ p5 = ggcorrplot(cor(health_behavior),
                 colors = c("blue", "white", "red"), 
                 hc.order = TRUE, 
                 type = "lower",
-                lab = FALSE,
+                lab = TRUE,
+                lab_size = 3,
                 ggtheme = ggplot2::theme_bw())
 
 ggsave(filename = "results/response-health_behavior.png", 
@@ -58,7 +60,8 @@ p6 = ggcorrplot(cor(clinical_care),
            colors = c("blue", "white", "red"),
            hc.order = TRUE, 
            type = "lower",
-           lab = FALSE,
+           lab = TRUE,
+           lab_size = 3,
            ggtheme = ggplot2::theme_bw())
 
 ggsave(filename = "results/clinical-care.png", 
@@ -85,7 +88,9 @@ social_economic_environment = mental_health %>%
 p7 = ggcorrplot(cor(social_economic_environment), 
            hc.order = FALSE, 
            type = "lower",
-           lab = FALSE,
+           lab = TRUE,
+           lab_size = 2,
+           tl.cex = 7,
            ggtheme = ggplot2::theme_bw())
 
 ggsave(filename = "results/social-economic-environment.png", 
@@ -105,7 +110,8 @@ p8 = ggcorrplot(cor(physical_environment),
            colors = c("blue", "white", "red"), 
            hc.order = TRUE, 
            type = "lower",
-           lab = FALSE,
+           lab = TRUE,
+           lab_size = 3,
            outline.color = "gray",
            ggtheme = ggplot2::theme_bw())
 
