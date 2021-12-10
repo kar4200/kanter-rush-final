@@ -85,4 +85,10 @@ ggsave(filename = "results/response-map.png",
        plot = p, 
        device = "png", 
        width = 7, 
+<<<<<<< HEAD
        height = 4)
+=======
+       height = 4)
+
+sfhkf 
+>>>>>>> 3c5fa3f07f71766ad40813e7f1272bda3e74607c
