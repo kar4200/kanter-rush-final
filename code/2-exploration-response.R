@@ -9,10 +9,7 @@ library(tidyverse)
 mental_health = read_csv("data/clean/mental_health_clean.csv")
 
 # to do:
-# correlation plot (ggcorplot)
-# create histogram of mentally_unhealthy_days and plot mean (examine bottom 5, top 5)
 # pick features and explore relationship with mentally_unhealthy response
-# heatmap 
 
 # create histogram of mentally unhealthy days
 # save the mean
