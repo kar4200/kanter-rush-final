@@ -4,7 +4,7 @@ library(tidyverse)
 # clean demographic data 
 demographic_data_clean = demographic_data %>%
   select(c(fips, state, name, ends_with("_2019"))) %>%
-  select(c(fips, state, name, starts_with("household_has"), starts_with("housing"), 
+  select(c(fips, state, name, starts_with("household_has"), housing_mobile_homes_2019, 
          per_capita_income_2019, persons_per_household_2019, 
          veterans_2019))
         
