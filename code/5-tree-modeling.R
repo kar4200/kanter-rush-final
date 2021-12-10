@@ -53,7 +53,7 @@ optimal_tree_info = cp_table %>%
   arrange(nsplit) %>% 
   head(1)
 
-optimal_tree_info$nsplit # 9 splits in the optimal tree
+optimal_tree_info$nsplit # 10 splits in the optimal tree
 
 # prune the optimal tree
 optimal_tree = prune(mental_health_fit_deep, cp = optimal_tree_info$CP)
@@ -61,7 +61,7 @@ rpart.plot(optimal_tree)
 
 # misclassification
 pred_decision = predict(optimal_tree, newdata = mental_health_test, type = "class")
-misclassification_decision <- mean(pred_decision != mental_health_test$mentally_unhealthy) # 14.98
+misclassification_decision <- mean(pred_decision != mental_health_test$mentally_unhealthy) # 9.07
 
 # RANDOM FORESTS (need to tune)
 set.seed(1)
@@ -69,10 +69,36 @@ rf_fit = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -p
                       data = mental_health_train)
 rf_fit$mtry # value equal to 7 - should go through to see if more is needed
 
+# tune random forests
+set.seed(1)
+mvalues = seq.int(1, 60, by = 5)
+oob_errors = numeric(length(mvalues))
+ntree = 100
+for(idx in 1:length(mvalues)){
+  m = mvalues[idx]
+  rf_fit_test = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
+                             mtry = m, data = mental_health_train)
+  oob_errors[idx] = rf_fit_test$err.rate[,"OOB"][ntree]
+}
+
+tibble(m = mvalues, oob_err = oob_errors) %>%
+  ggplot(aes(x = m, y = oob_err)) + 
+  geom_line() + geom_point() + 
+  scale_x_continuous(breaks = mvalues) +
+  theme_bw()
+
+# tune random forest
+set.seed(1)
+rf_fit_tuned = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
+                            mtry = 21, 
+                            ntree = 500, 
+                            importance = TRUE,
+                            data = mental_health_train)
+
 # variable importance 
-varImpPlot(rf_fit, n.var = 10, cex = 0.8)
+varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8)
 
 # misclassification error
-pred_rf = predict(rf_fit, newdata = mental_health_test, type = "class")
-misclassification_rf <- mean(pred_rf != mental_health_test$mentally_unhealthy) # 10.34
+pred_rf = predict(rf_fit_tuned, newdata = mental_health_test, type = "class")
+misclassification_rf <- mean(pred_rf != mental_health_test$mentally_unhealthy) # 7.38
 
