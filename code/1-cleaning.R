@@ -96,4 +96,4 @@ mental_health_clean = mental_health_clean %>%
   mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 3.95, 1, 0) )
 
 # write cleaned data to file
-write_csv(mental_health_clean, file = "data/clean/mental_health.csv")
+write_csv(mental_health_clean, file = "data/clean/mental_health_clean.csv")

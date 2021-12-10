@@ -16,4 +16,4 @@ mental_health_test = mental_health %>% filter(!(row_number() %in% train_samples)
 
 # save the train and test data
 write_csv(x = mental_health_train, file = "data/clean/mental_health_train.csv")
-write_tsv(x = mental_health_test, file = "data/clean/mental_health_test.csv")
+write_csv(x = mental_health_test, file = "data/clean/mental_health_test.csv")
