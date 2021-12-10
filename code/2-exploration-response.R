@@ -4,15 +4,13 @@ library(cowplot)                        # for side by side plots
 library(lubridate)                      # for dealing with dates
 library(maps)                           # for creating maps
 library(tidyverse)
+library()
 
 # read in the cleaned data
 mental_health = read_csv("data/clean/mental_health_clean.csv")
 
 # to do:
-# correlation plot (ggcorplot)
-# create histogram of mentally_unhealthy_days and plot mean (examine bottom 5, top 5)
 # pick features and explore relationship with mentally_unhealthy response
-# heatmap 
 
 # create histogram of case fatality rate
 # save the mean
@@ -36,6 +34,7 @@ ggsave(filename = "results/response-histogram.png",
        width = 5, 
        height = 3)
 
+<<<<<<< HEAD
 # examine top 10 counties by case fatality rate
 covid_data %>% 
   select(county, state, case_fatality_rate) %>%
@@ -45,6 +44,9 @@ covid_data %>%
 
 # create a heatmap of case fatality rate across the U.S.
 View(mental_health)
+=======
+# create a heatmap of mentally unhealthy days for cleaned dataset
+>>>>>>> 2c3dfd76ea08537f170cf2503065de1d5711309d
 p2 = map_data("county") %>%
   as_tibble() %>% 
   left_join(mental_health %>% 
@@ -87,6 +89,7 @@ ggsave(filename = "results/response-map.png",
        width = 7, 
 <<<<<<< HEAD
        height = 4)
+<<<<<<< HEAD
 =======
        height = 4)
 <<<<<<< HEAD:code/2-exploration.R
@@ -95,3 +98,80 @@ sfhkf
 >>>>>>> 3c5fa3f07f71766ad40813e7f1272bda3e74607c
 =======
 >>>>>>> a27525048b4dc6af15f5149a0ff6bb695c50d5cc:code/2-exploration-response.R
+=======
+
+# create heatmap of highest mentally unhappy days 
+wv = map_data("county") %>%
+  as_tibble() %>%
+  filter(region == "west virginia") %>%
+  left_join(mental_health %>% 
+              rename(region = state, 
+                     subregion = name,
+                     `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
+              mutate(region = str_to_lower(region), 
+                     subregion = str_to_lower(subregion)), 
+            by = c("region", "subregion")) %>%
+  ggplot() + 
+  geom_polygon(data=map_data("state") %>% filter(region == "west virginia"),
+               aes(x=long, y=lat, group=group),
+               color="black", fill=NA, size = 1, alpha = .3) + 
+  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+               color="darkblue", size = .1) +
+  scale_fill_gradient(low = "blue", high = "red") +
+  theme_void()
+
+ggsave(filename = "results/west-va.png", 
+       plot = wv, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
+nd = map_data("county") %>%
+  as_tibble() %>%
+  filter(region == "north dakota") %>%
+  left_join(mental_health %>% 
+              rename(region = state, 
+                     subregion = name,
+                     `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
+              mutate(region = str_to_lower(region), 
+                     subregion = str_to_lower(subregion)), 
+            by = c("region", "subregion")) %>%
+  ggplot() + 
+  geom_polygon(data=map_data("state") %>% filter(region == "north dakota"),
+               aes(x=long, y=lat, group=group),
+               color="black", fill=NA, size = 1, alpha = .3) + 
+  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+               color="darkblue", size = .1) +
+  scale_fill_gradient(low = "blue", high = "red") +
+  theme_void()
+
+ggsave(filename = "results/north-dakota.png", 
+       plot = nd, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
+# examine top 10 counties with lowest mentally unhealthy days
+mental_health_clean %>%
+  arrange(mentally_unhealthy_days) %>%
+  select(state, name, mentally_unhealthy_days) %>%
+  head(10) %>%
+  kable(format = "latex",
+        booktabs = TRUE, 
+        col.names = c("State", "County", "Mentally Unhealthy Days"),
+        caption = "Top 10 counties with lowest mentally unhealthy days") %>%
+  save_kable("low-days.pdf")
+
+# examine top 10 counties with highest mentally unhealthy days
+mental_health_clean %>%
+  arrange(desc(mentally_unhealthy_days)) %>%
+  select(state, name, mentally_unhealthy_days) %>%
+  head(10) %>%
+  kable(format = "latex",
+        booktabs = TRUE, 
+        col.names = c("State", "County", "Mentally Unhealthy Days"),
+        caption = "Top 10 counties with highest mentally unhealthy days") %>%
+  save_kable("high-days.pdf")
+  
+  
+>>>>>>> 2c3dfd76ea08537f170cf2503065de1d5711309d
