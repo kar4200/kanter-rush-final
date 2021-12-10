@@ -4,12 +4,13 @@ library(tidyverse)
 
 # clean demographic data 
 demographic_data_clean = demographic_data %>%
-  select(fips,                        
-         state,
-         name,
-         ends_with("2019"),
-         -households_2019)
-  
+  select(c(fips, state, name, ends_with("_2019"))) %>%
+  select(c(fips, state, name, starts_with("household_has"), starts_with("housing"), 
+         per_capita_income_2019, persons_per_household_2019, 
+         veterans_2019))
+        
+names(demographic_data_clean) = gsub(pattern = "_2019", replacement = "", 
+                                  x = names(demographic_data_clean))
 
 View(demographic_data_clean)
 
@@ -62,9 +63,40 @@ mental_health = left_join(mental_health,
                            by = c("fips", "state")) %>% 
   select(-name.y)
 
+# clean the joined datasets 
+mental_health_clean = mental_health %>%  
+  select(-c(`Years of Potential Life Lost Rate`, `HIV Prevalence Rate`, 
+            starts_with("poverty"), `% LBW`, 
+            `% Frequent Mental Distress`, `% Fair/Poor`, `80th Percentile Income`,  
+            `20th Percentile Income`, `% Frequent Physical Distress`, `% Uninsured...56`, 
+            `% Uninsured...60`, Population)) %>% 
+  na.omit() %>% 
+  rename(name = name.x, prevent_hosp_rate = `Preventable Hosp. Rate`)
 
-View(mental_health)
-View(colSums(is.na(mental_health)))
+# table to determine which columns to remove 
+colSums(is.na(mental_health))
 
+# rename columns for tidyness 
+names(mental_health_clean) = gsub(pattern = "% ", replacement = "perc ", 
+                                  x = names(mental_health_clean))
+names(mental_health_clean) = gsub(pattern = " ", replacement = "_", 
+                                  x = names(mental_health_clean))
+names(mental_health_clean) = gsub(pattern = "-", replacement = "_", 
+                                  x = names(mental_health_clean))
+names(mental_health_clean) = gsub(pattern = "<", replacement = "under", 
+                                  x = names(mental_health_clean))
+names(mental_health_clean) = gsub(pattern = "/", replacement = "_", 
+                                  x = names(mental_health_clean))
+names(mental_health_clean) = tolower(names(mental_health_clean))
+
+# create binary response variable (mentally unhealthy: yes or no)
+mental_health_clean %>% 
+  summarise(mean = mean(mentally_unhealthy_days))
+
+mental_health_clean = mental_health_clean %>%  
+  mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 3.95, 1, 0) )
+
+view(colnames(mental_health_clean))
+view(mental_health_clean)
 # write cleaned data to file
-write_csv(mental_health, file = "data/clean/mental_health.csv")
+write_csv(mental_health_clean, file = "data/clean/mental_health.csv")
