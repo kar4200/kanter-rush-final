@@ -45,10 +45,11 @@ covid_data %>%
   head(10) %>%
   write_tsv("results/top-10-counties-data.tsv")
 
+HELLO BITCH 
 # create a heatmap of case fatality rate across the U.S.
 p = map_data("county") %>%
   as_tibble() %>% 
-  left_join(case_data %>% 
+  left_join(mental_health %>% 
               rename(region = state, 
                      subregion = county,
                      `Case Fatality Rate` = case_fatality_rate) %>% 
