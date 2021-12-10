@@ -89,6 +89,9 @@ ggsave(filename = "results/response-map.png",
        height = 4)
 =======
        height = 4)
+<<<<<<< HEAD:code/2-exploration.R
 
 sfhkf 
 >>>>>>> 3c5fa3f07f71766ad40813e7f1272bda3e74607c
+=======
+>>>>>>> a27525048b4dc6af15f5149a0ff6bb695c50d5cc:code/2-exploration-response.R
