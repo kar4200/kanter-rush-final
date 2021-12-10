@@ -1,5 +1,4 @@
 # load libraries
-
 library(rpart)         # to train decision trees
 library(rpart.plot)    # to plot decision trees
 library(randomForest)  # random forests
@@ -63,4 +62,17 @@ rpart.plot(optimal_tree)
 # misclassification
 pred_decision = predict(optimal_tree, newdata = mental_health_test, type = "class")
 misclassification_decision <- mean(pred_decision != mental_health_test$mentally_unhealthy) # 14.98
+
+# RANDOM FORESTS (need to tune)
+set.seed(1)
+rf_fit = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days,
+                      data = mental_health_train)
+rf_fit$mtry # value equal to 7 - should go through to see if more is needed
+
+# variable importance 
+varImpPlot(rf_fit, n.var = 10, cex = 0.8)
+
+# misclassification error
+pred_rf = predict(rf_fit, newdata = mental_health_test, type = "class")
+misclassification_rf <- mean(pred_rf != mental_health_test$mentally_unhealthy) # 10.34
 
