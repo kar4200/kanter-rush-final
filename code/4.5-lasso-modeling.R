@@ -8,7 +8,7 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 
 # run lasso regression
 set.seed(1)
-lasso_fit = cv.glmnet(mentally_unhealthy ~ . - mentally_unhealthy_days -physically_unhealthy_days,   
+lasso_fit = cv.glmnet(mentally_unhealthy ~ . - mentally_unhealthy_days - physically_unhealthy_days,   
                       alpha = 1,                 
                       nfolds = 10,               
                       data = mental_health_train)

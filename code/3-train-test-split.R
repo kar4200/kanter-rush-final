@@ -4,7 +4,6 @@ mental_health = read_csv("data/clean/mental_health_clean.csv")
 # set seed
 set.seed(1)
 
-# 
 mental_health_removed = mental_health %>%  
   select(-fips, -state, -name)
 

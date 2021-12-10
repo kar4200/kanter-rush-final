@@ -89,22 +89,18 @@ names(mental_health_clean) = gsub(pattern = "/", replacement = "_",
                                   x = names(mental_health_clean))
 names(mental_health_clean) = tolower(names(mental_health_clean))
 
-mental_health_clean = mental_health_clean %>% 
-  mutate(unhealthy_days = physically_unhealthy_days + mentally_unhealthy_days)
-
 # create binary response variable (mentally unhealthy: yes or no)
 mental_health_clean %>% 
   summarise(mean = mean(mentally_unhealthy_days))
 
-mental_health_clean %>%  
-  summarise(mean = mean(physically_unhealthy_days))
+min(mental_health_clean$mentally_unhealthy_days) # 2.5
+max(mental_health_clean$mentally_unhealthy_days) # 6
 
+# set threshold for mentally unhealthy (yes vs. no) at 4.5 (justify later)
 mental_health_clean = mental_health_clean %>%  
-  mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 4.5, 1, 0), 
-    physically_unhealthy = ifelse(physically_unhealthy_days >= 4.5, 1, 0), 
-    unhealthy = ifelse(unhealthy_days >= 9, 1, 0))
+  mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 4.5, 1, 0))
 
-View(mental_health_clean)
+view(mental_health_clean)
  
 # write cleaned data to file
 write_csv(mental_health_clean, file = "data/clean/mental_health_clean.csv")

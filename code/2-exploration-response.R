@@ -15,6 +15,7 @@ health_total = read_csv("data/clean/health_data_clean.csv")
 # create histogram of case fatality rate
 # save the mean
 mean <- mean(mental_health$mentally_unhealthy_days)
+cutoff <- 4.5
 
 # plot mentally_unhealthy days and draw line at the mean
 p = mental_health %>%
@@ -23,6 +24,9 @@ p = mental_health %>%
   geom_vline(xintercept = mean,
              linetype = "dashed",
              col = "red") +
+  geom_vline(xintercept = cutoff,
+             linetype = "dashed",
+             col = "blue")
   labs(x = "Mentally Unhealthy Days (per month)", 
        y = "Number of Counties") +
   theme_bw()

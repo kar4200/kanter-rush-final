@@ -11,7 +11,7 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # running a logistic regression
-glm_fit = glm(mentally_unhealthy ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
+glm_fit = glm(mentally_unhealthy ~ . - mentally_unhealthy_days - physically_unhealthy_days, 
               family = "binomial",
               data = mental_health_train)
 
@@ -25,7 +25,7 @@ fitted_probabilities = predict(glm_fit,
                                newdata = mental_health_test,
                                type = "response")   
 
-head(fitted_probabilities)
+view(fitted_probabilities)
 
 # make predictions 
 predictions = as.numeric(fitted_probabilities > 0.5)
@@ -44,8 +44,8 @@ mental_health_test %>%
   select(mentally_unhealthy, predicted_mental_health) %>%
   table()
 
-fpr = 28 / (204 + 28)
-fnr = 22 / (22 + 220)
+fpr = 19 / (370 + 19)
+fnr = 17 / (68 + 17)
 
 # ROC curve
 roc_data = roc(mental_health_test %>% pull(mentally_unhealthy), 
