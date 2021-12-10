@@ -25,7 +25,7 @@ beta_hat_std %>%
   kable(format = "latex",
         booktabs = TRUE, 
         col.names = c("Feature", "Coefficient"),
-        caption = "Top 10 features selected by lasso and their coefficients") %>%
+        caption = "Top 10 features selected by ridge and their coefficients") %>%
   save_kable("ridge-coefficients.pdf")
 
 lambda = ridge_fit$lambda.1se
