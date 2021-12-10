@@ -14,7 +14,7 @@ mental_health = read_csv("data/clean/mental_health_clean.csv")
 # pick features and explore relationship with mentally_unhealthy response
 # heatmap 
 
-# create histogram of case fatality rate
+# create histogram of mentally unhealthy days
 # save the mean
 mean <- mean(mental_health$mentally_unhealthy_days)
 
@@ -45,28 +45,53 @@ covid_data %>%
   head(10) %>%
   write_tsv("results/top-10-counties-data.tsv")
 
-HELLO BITCH 
-# create a heatmap of case fatality rate across the U.S.
-p = map_data("county") %>%
+# create a heatmap of mentally unhealthy days for cleaned dataset
+p2 = map_data("county") %>%
   as_tibble() %>% 
   left_join(mental_health %>% 
               rename(region = state, 
-                     subregion = county,
-                     `Case Fatality Rate` = case_fatality_rate) %>% 
+                     subregion = name,
+                     `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
               mutate(region = str_to_lower(region), 
                      subregion = str_to_lower(subregion)), 
             by = c("region", "subregion")) %>%
   ggplot() + 
   geom_polygon(data=map_data("state"), 
                aes(x=long, y=lat, group=group),
-               color="black", fill=NA,  size = 1, alpha = .3) + 
-  geom_polygon(aes(x=long, y=lat, group=group, fill = `Case Fatality Rate`),
+               color="black", fill=NA, size = 1, alpha = .3) + 
+  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
-  scale_fill_gradient(low = "blue", high = "red") +
-  theme_void()
+  scale_fill_gradient(low = "blue", high = "red") 
 
-ggsave(filename = "results/response-map.png", 
-       plot = p, 
+ggsave(filename = "results/map-clean.png", 
+       plot = p2, 
        device = "png", 
        width = 7, 
        height = 4)
+
+# create a heatmap of mentally unhealthy days for original health dataset
+health_data_clean <- read_csv("data/clean/health_data_clean.csv")
+
+p3 = map_data("county") %>%
+  as_tibble() %>% 
+  left_join(health_data_clean %>% 
+              rename(region = state, 
+                     subregion = name,
+                     `Mentally Unhealthy Days` = `Mentally Unhealthy Days`) %>% 
+              mutate(region = str_to_lower(region), 
+                     subregion = str_to_lower(subregion)), 
+            by = c("region", "subregion")) %>%
+  ggplot() + 
+  geom_polygon(data=map_data("state"), 
+               aes(x=long, y=lat, group=group),
+               color="black", fill=NA,size = 1, alpha = .3) + 
+  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+               color="darkblue", size = .1) +
+  scale_fill_gradient(low = "blue", high = "red")
+
+ggsave(filename = "results/map-all.png", 
+       plot = p3, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
