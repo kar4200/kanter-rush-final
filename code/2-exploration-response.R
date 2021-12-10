@@ -26,7 +26,7 @@ p = mental_health %>%
              col = "red") +
   geom_vline(xintercept = cutoff,
              linetype = "dashed",
-             col = "blue")
+             col = "blue") +
   labs(x = "Mentally Unhealthy Days (per month)", 
        y = "Number of Counties") +
   theme_bw()
