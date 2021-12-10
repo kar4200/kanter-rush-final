@@ -1,5 +1,4 @@
 # load libraries
-library(lubridate)
 library(tidyverse)
 
 # clean demographic data 
@@ -12,7 +11,7 @@ demographic_data_clean = demographic_data %>%
 names(demographic_data_clean) = gsub(pattern = "_2019", replacement = "", 
                                   x = names(demographic_data_clean))
 
-View(demographic_data_clean)
+write_csv(demographic_data_clean, file = "data/clean/demographic_data_clean.csv")
 
 # clean health data
 health_data_clean = health_data %>%
@@ -35,7 +34,7 @@ health_data_clean = health_data %>%
   rename(fips = FIPS, state = State, name = County) %>% 
   mutate(fips = as.double(fips))
 
-View(health_data_clean)
+write_csv(health_data_clean, file = "data/clean/health_data_clean.csv")
 
 # clean additional features 
 feature_data_clean = feature_data %>% 
@@ -51,7 +50,7 @@ feature_data_clean = feature_data %>%
   rename(fips = FIPS, state = State, name = County) %>% 
   mutate(fips = as.double(fips))
 
-View(feature_data_clean)
+write_csv(feature_data_clean, file = "data/clean/feature_data_clean.csv")
 
 # join county health data with case data
 mental_health = inner_join(health_data_clean, 
@@ -96,7 +95,5 @@ mental_health_clean %>%
 mental_health_clean = mental_health_clean %>%  
   mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 3.95, 1, 0) )
 
-view(colnames(mental_health_clean))
-view(mental_health_clean)
 # write cleaned data to file
 write_csv(mental_health_clean, file = "data/clean/mental_health.csv")
