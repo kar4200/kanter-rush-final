@@ -1,12 +1,19 @@
 # read in the cleaned data
-covid_data = read_tsv("data/clean/covid_data.tsv")
+mental_health = read_csv("data/clean/mental_health_clean.csv")
 
-# split into train and test (set seed here if applicable)
-test_states = c("Alabama", "Arizona", "Arkansas", 
-                "California", "Colorado", "Connecticut")
-covid_train = covid_data %>% filter(!(state %in% test_states))
-covid_test = covid_data %>% filter(state %in% test_states)
+# set seed
+set.seed(1)
+
+# split into train and test (80% for train and 20% for test)
+n = nrow(mental_health)
+train_samples = sample(1:n, round(0.8*n))
+
+# training set
+mental_health_train = mental_health %>% filter(row_number() %in% train_samples)
+
+# test set
+mental_health_test = mental_health %>% filter(!(row_number() %in% train_samples))
 
 # save the train and test data
-write_tsv(x = covid_train, file = "data/clean/covid_train.tsv")
-write_tsv(x = covid_test, file = "data/clean/covid_test.tsv")
+write_csv(x = mental_health_train, file = "data/clean/mental_health_train.csv")
+write_tsv(x = mental_health_test, file = "data/clean/mental_health_test.csv")
