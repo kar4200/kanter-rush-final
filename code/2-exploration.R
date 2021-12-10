@@ -6,21 +6,27 @@ library(maps)                           # for creating maps
 library(tidyverse)
 
 # read in the cleaned data
-covid_data = read_tsv("data/clean/covid_data.tsv")
+mental_health = read_csv("data/clean/mental_health_clean.csv")
 
-# calculate median case fatality rate
-median_case_fatality_rate = covid_data %>%
-  summarise(median(case_fatality_rate)) %>%
-  pull()
+# to do:
+# correlation plot (ggcorplot)
+# create histogram of mentally_unhealthy_days and plot mean (examine bottom 5, top 5)
+# pick features and explore relationship with mentally_unhealthy response
+# heatmap 
 
 # create histogram of case fatality rate
-p = covid_data %>%
-  ggplot(aes(x = case_fatality_rate)) + 
+# save the mean
+mean <- mean(mental_health$mentally_unhealthy_days)
+
+# plot mentally_unhealthy days and draw line at the mean
+p = mental_health %>%
+  ggplot(aes(x = mentally_unhealthy_days)) + 
   geom_histogram() +
-  geom_vline(xintercept = median_case_fatality_rate,
-             linetype = "dashed") +
-  labs(x = "Case fatality rate (percent)", 
-       y = "Number of counties") +
+  geom_vline(xintercept = mean,
+             linetype = "dashed",
+             col = "red") +
+  labs(x = "Mentally Unhealthy Days (per month)", 
+       y = "Number of Counties") +
   theme_bw()
 
 # save the histogram
