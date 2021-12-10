@@ -8,7 +8,7 @@ source("code/functions/plot_glmnet.R")            # for lasso/ridge trace plots
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
 
 # running a logistic regression
-glm_fit = glm(mentally_unhealthy ~ . -mentally_unhealthy_days, 
+glm_fit = glm(mentally_unhealthy ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
               family = "binomial",
               data = mental_health_train)
 
@@ -41,7 +41,8 @@ mental_health_test %>%
   select(mentally_unhealthy, predicted_mental_health) %>%
   table()
 
-fpr = 
+fpr = 28 / (204 + 28)
+fnr = 22 / (22 + 220)
 
 # ROC curve
 roc_data = roc(mental_health_test %>% pull(mentally_unhealthy), 
