@@ -36,6 +36,8 @@ ggsave(filename = "results/response-histogram.png",
        width = 5, 
        height = 3)
 
+# correlation plot hgidsg
+
 # examine top 10 counties by case fatality rate
 covid_data %>% 
   select(county, state, case_fatality_rate) %>%
