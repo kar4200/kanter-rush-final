@@ -84,7 +84,6 @@ social_economic_environment = mental_health %>%
          perc_homeowners, perc_severe_housing_cost_burden, 
          household_has_broadband, household_has_computer, 
          household_has_smartphone, housing_mobile_homes, 
-         housing_one_unit_structures, housing_two_unit_structures, 
          per_capita_income, persons_per_household)
 
 p7 = ggcorrplot(cor(social_economic_environment), 
@@ -105,7 +104,7 @@ physical_environment = mental_health %>%
   select(-c(fips, state, name)) %>% 
   select(average_daily_pm2.5, presence_of_violation, perc_severe_housing_problems,
          severe_housing_cost_burden, overcrowding,
-         inadequate_facilities, perc_drive_alone, perc_long_commute__drives_alone,
+         inadequate_facilities, perc_drive_alone, perc_long_commute_drives_alone,
          perc_rural)
 
 p8 = ggcorrplot(cor(physical_environment),
