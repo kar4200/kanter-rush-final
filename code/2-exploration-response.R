@@ -94,5 +94,3 @@ ggsave(filename = "results/map-all.png",
        device = "png", 
        width = 7, 
        height = 4)
-
-sfhkf 
