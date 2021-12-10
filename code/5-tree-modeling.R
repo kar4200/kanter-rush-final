@@ -34,7 +34,7 @@ mental_health_fit_deep = rpart(mentally_unhealthy ~ . - mentally_unhealthy_days 
 cp_table = printcp(mental_health_fit_deep) %>%
   as_tibble()
 
-cp_table %>% 
+cp = cp_table %>% 
   filter(nsplit >= 2) %>%
   ggplot(aes(x = nsplit+1, y = xerror, 
              ymin = xerror - xstd, ymax = xerror + xstd)) + 
@@ -44,7 +44,13 @@ cp_table %>%
   geom_errorbar(width = 0.1) +
   xlab("Number of terminal nodes") + ylab("CV error") + 
   geom_hline(aes(yintercept = min(xerror)), linetype = "dashed") + 
-  theme_bw()
+  theme_bw() 
+
+ggsave(filename = "results/cp-cv-chart.png", 
+       plot = cp, 
+       device = "png", 
+       width = 6, 
+       height = 6)
 
 # find optimal tree
 set.seed(1)
@@ -57,17 +63,27 @@ optimal_tree_info$nsplit # 10 splits in the optimal tree
 
 # prune the optimal tree
 optimal_tree = prune(mental_health_fit_deep, cp = optimal_tree_info$CP)
+classification = rpart.plot(optimal_tree)
+
+save(optimal_tree, file = "results/optimal_tree.Rda")
+
+png(width = 8, 
+    height = 8,
+    res = 300,
+    units = "in", 
+    filename = "results/classification-tree.png")
 rpart.plot(optimal_tree)
+dev.off()
 
 # misclassification
 pred_decision = predict(optimal_tree, newdata = mental_health_test, type = "class")
 misclassification_decision <- mean(pred_decision != mental_health_test$mentally_unhealthy) # 9.07
 
-# RANDOM FORESTS (need to tune)
+# RANDOM FORESTS
 set.seed(1)
 rf_fit = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days,
                       data = mental_health_train)
-rf_fit$mtry # value equal to 7 - should go through to see if more is needed
+rf_fit$mtry
 
 # tune random forests
 set.seed(1)
