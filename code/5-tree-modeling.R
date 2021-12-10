@@ -97,11 +97,19 @@ for(idx in 1:length(mvalues)){
   oob_errors[idx] = rf_fit_test$err.rate[,"OOB"][ntree]
 }
 
-tibble(m = mvalues, oob_err = oob_errors) %>%
+rf_cv = tibble(m = mvalues, oob_err = oob_errors) %>%
   ggplot(aes(x = m, y = oob_err)) + 
   geom_line() + geom_point() + 
   scale_x_continuous(breaks = mvalues) +
   theme_bw()
+
+png(width = 7, 
+    height = 7,
+    res = 300,
+    units = "in", 
+    filename = "results/rf-cv-plot.png")
+plot(rf_cv)
+dev.off()
 
 # tune random forest
 set.seed(1)
@@ -111,8 +119,11 @@ rf_fit_tuned = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_d
                             importance = TRUE,
                             data = mental_health_train)
 
+save(rf_fit_tuned, file = "results/rf_fit_tuned.Rda")
+
 # variable importance 
-varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8)
+var_imp = varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8)
+# find how to save this
 
 # misclassification error
 pred_rf = predict(rf_fit_tuned, newdata = mental_health_test, type = "class")
