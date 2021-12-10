@@ -34,7 +34,6 @@ ggsave(filename = "results/response-histogram.png",
        width = 5, 
        height = 3)
 
-<<<<<<< HEAD
 # examine top 10 counties by case fatality rate
 covid_data %>% 
   select(county, state, case_fatality_rate) %>%
@@ -43,10 +42,7 @@ covid_data %>%
   write_tsv("results/top-10-counties-data.tsv")
 
 # create a heatmap of case fatality rate across the U.S.
-View(mental_health)
-=======
 # create a heatmap of mentally unhealthy days for cleaned dataset
->>>>>>> 2c3dfd76ea08537f170cf2503065de1d5711309d
 p2 = map_data("county") %>%
   as_tibble() %>% 
   left_join(mental_health %>% 
@@ -87,18 +83,8 @@ ggsave(filename = "results/response-map.png",
        plot = p, 
        device = "png", 
        width = 7, 
-<<<<<<< HEAD
        height = 4)
-<<<<<<< HEAD
-=======
        height = 4)
-<<<<<<< HEAD:code/2-exploration.R
-
-sfhkf 
->>>>>>> 3c5fa3f07f71766ad40813e7f1272bda3e74607c
-=======
->>>>>>> a27525048b4dc6af15f5149a0ff6bb695c50d5cc:code/2-exploration-response.R
-=======
 
 # create heatmap of highest mentally unhappy days 
 wv = map_data("county") %>%
@@ -172,6 +158,3 @@ mental_health_clean %>%
         col.names = c("State", "County", "Mentally Unhealthy Days"),
         caption = "Top 10 counties with highest mentally unhealthy days") %>%
   save_kable("high-days.pdf")
-  
-  
->>>>>>> 2c3dfd76ea08537f170cf2503065de1d5711309d
