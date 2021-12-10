@@ -84,6 +84,57 @@ ggsave(filename = "results/map-all.png",
        width = 7, 
        height = 4)
 
+# create heatmap of highest mentally unhappy days 
+wv = map_data("county") %>%
+  as_tibble() %>%
+  filter(region == "west virginia") %>%
+  left_join(mental_health %>% 
+              rename(region = state, 
+                     subregion = name,
+                     `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
+              mutate(region = str_to_lower(region), 
+                     subregion = str_to_lower(subregion)), 
+            by = c("region", "subregion")) %>%
+  ggplot() + 
+  geom_polygon(data=map_data("state") %>% filter(region == "west virginia"),
+               aes(x=long, y=lat, group=group),
+               color="black", fill=NA, size = 1, alpha = .3) + 
+  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+               color="darkblue", size = .1) +
+  scale_fill_gradient(low = "blue", high = "red") +
+  theme_void()
+
+ggsave(filename = "results/west-va.png", 
+       plot = wv, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
+nd = map_data("county") %>%
+  as_tibble() %>%
+  filter(region == "north dakota") %>%
+  left_join(mental_health %>% 
+              rename(region = state, 
+                     subregion = name,
+                     `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
+              mutate(region = str_to_lower(region), 
+                     subregion = str_to_lower(subregion)), 
+            by = c("region", "subregion")) %>%
+  ggplot() + 
+  geom_polygon(data=map_data("state") %>% filter(region == "north dakota"),
+               aes(x=long, y=lat, group=group),
+               color="black", fill=NA, size = 1, alpha = .3) + 
+  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+               color="darkblue", size = .1) +
+  scale_fill_gradient(low = "blue", high = "red") +
+  theme_void()
+
+ggsave(filename = "results/north-dakota.png", 
+       plot = nd, 
+       device = "png", 
+       width = 7, 
+       height = 4)
+
 # examine top 10 counties with lowest mentally unhealthy days
 mental_health_clean %>%
   arrange(mentally_unhealthy_days) %>%
