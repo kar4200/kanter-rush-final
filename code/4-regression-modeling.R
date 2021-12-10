@@ -4,6 +4,7 @@ library(glmnetUtils)                              # to run ridge and lasso
 library(pROC)   
 source("code/functions/plot_glmnet.R")            # for lasso/ridge trace plots
 
+View(mental_health_train)
 # read in the training data
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
 
