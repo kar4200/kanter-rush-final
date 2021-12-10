@@ -4,6 +4,7 @@ library(cowplot)                        # for side by side plots
 library(lubridate)                      # for dealing with dates
 library(maps)                           # for creating maps
 library(tidyverse)
+library()
 
 # read in the cleaned data
 mental_health = read_csv("data/clean/mental_health_clean.csv")
@@ -32,15 +33,6 @@ ggsave(filename = "results/response-histogram.png",
        device = "png", 
        width = 5, 
        height = 3)
-
-# correlation plot hgidsg
-
-# examine top 10 counties by case fatality rate
-covid_data %>% 
-  select(county, state, case_fatality_rate) %>%
-  arrange(desc(case_fatality_rate)) %>%
-  head(10) %>%
-  write_tsv("results/top-10-counties-data.tsv")
 
 # create a heatmap of mentally unhealthy days for cleaned dataset
 p2 = map_data("county") %>%
@@ -91,3 +83,27 @@ ggsave(filename = "results/map-all.png",
        device = "png", 
        width = 7, 
        height = 4)
+
+# examine top 10 counties with lowest mentally unhealthy days
+mental_health_clean %>%
+  arrange(mentally_unhealthy_days) %>%
+  select(state, name, mentally_unhealthy_days) %>%
+  head(10) %>%
+  kable(format = "latex",
+        booktabs = TRUE, 
+        col.names = c("State", "County", "Mentally Unhealthy Days"),
+        caption = "Top 10 counties with lowest mentally unhealthy days") %>%
+  save_kable("low-days.pdf")
+
+# examine top 10 counties with highest mentally unhealthy days
+mental_health_clean %>%
+  arrange(desc(mentally_unhealthy_days)) %>%
+  select(state, name, mentally_unhealthy_days) %>%
+  head(10) %>%
+  kable(format = "latex",
+        booktabs = TRUE, 
+        col.names = c("State", "County", "Mentally Unhealthy Days"),
+        caption = "Top 10 counties with highest mentally unhealthy days") %>%
+  save_kable("high-days.pdf")
+  
+  

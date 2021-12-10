@@ -19,7 +19,7 @@ p4 = ggcorrplot(cor(health_outcomes),
                 lab_size = 4,
                 ggtheme = ggplot2::theme_bw())
 
-ggsave(filename = "results/response-health_outcomes.png", 
+ggsave(filename = "results/corr-health_outcomes.png", 
        plot = p4, 
        device = "png", 
        width = 5, 
@@ -42,7 +42,7 @@ p5 = ggcorrplot(cor(health_behavior),
                 tl.cex = 7,
                 ggtheme = ggplot2::theme_bw())
 
-ggsave(filename = "results/response-health_behavior.png", 
+ggsave(filename = "results/corr-health_behavior.png", 
        plot = p5, 
        device = "png", 
        width = 5, 
@@ -66,7 +66,7 @@ p6 = ggcorrplot(cor(clinical_care),
            tl.cex = 8,
            ggtheme = ggplot2::theme_bw())
 
-ggsave(filename = "results/clinical-care.png", 
+ggsave(filename = "results/corr-clinical-care.png", 
        plot = p6, 
        device = "png", 
        width = 5, 
@@ -95,7 +95,7 @@ p7 = ggcorrplot(cor(social_economic_environment),
            tl.cex = 6.5,
            ggtheme = ggplot2::theme_bw())
 
-ggsave(filename = "results/social-economic-environment.png", 
+ggsave(filename = "results/corr-social-economic-environment.png", 
        plot = p7, 
        device = "png", 
        width = 6, 
@@ -118,7 +118,7 @@ p8 = ggcorrplot(cor(physical_environment),
            outline.color = "gray",
            ggtheme = ggplot2::theme_bw())
 
-ggsave(filename = "results/physical-environment.png", 
+ggsave(filename = "results/corr-physical-environment.png", 
        plot = p8, 
        device = "png", 
        width = 5, 
