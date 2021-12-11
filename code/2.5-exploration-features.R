@@ -29,8 +29,9 @@ ggsave(filename = "results/corr-health_outcomes.png",
 health_behavior = mental_health %>% 
   select(-c(fips, state, name)) %>% 
   select(perc_smokers, perc_obese, food_environment_index,
-         perc_physically_inactive, perc_with_access, perc_excessive_drinking,
-         perc_alcohol_impaired, chlamydia_rate, teen_birth_rate, perc_limited_access,
+         perc_physically_inactive, perc_with_access, 
+         perc_excessive_drinking, perc_alcohol_impaired, 
+         chlamydia_rate, teen_birth_rate, perc_limited_access,
          perc_insufficient_sleep, perc_food_insecure)
 
 p5 = ggcorrplot(cor(health_behavior),
@@ -51,11 +52,9 @@ ggsave(filename = "results/corr-health_behavior.png",
 # correlated features - clinical care
 clinical_care = mental_health %>% 
   select(-c(fips, state, name)) %>% 
-  select(perc_uninsured, pcp_rate, 
-         dentist_rate, mhp_rate, 
-         prevent_hosp_rate,
-         perc_mammography_screened, 
-         perc_flu_vaccinated)
+  select(perc_uninsured, pcp_rate, dentist_rate, 
+         mhp_rate, prevent_hosp_rate, 
+         perc_mammography_screened, perc_flu_vaccinated)
 
 p6 = ggcorrplot(cor(clinical_care),
            colors = c("blue", "white", "red"),
@@ -79,12 +78,12 @@ social_economic_environment = mental_health %>%
          perc_unemployed, perc_children_in_poverty, 
          perc_single_parent_households, 
          association_rate, violent_crime_rate, 
-         injury_death_rate, income_ratio, 
-         household_income, perc_free_or_reduced_lunch, 
-         perc_homeowners, perc_severe_housing_cost_burden, 
-         household_has_broadband, household_has_computer, 
-         household_has_smartphone, housing_mobile_homes, 
-         per_capita_income, persons_per_household)
+         injury_death_rate, household_income, 
+         perc_free_or_reduced_lunch, perc_homeowners, 
+         perc_severe_housing_cost_burden, household_has_broadband, 
+         household_has_computer, household_has_smartphone, 
+         housing_mobile_homes, per_capita_income, 
+         persons_per_household, income_ratio)
 
 p7 = ggcorrplot(cor(social_economic_environment), 
            hc.order = FALSE, 
@@ -102,10 +101,10 @@ ggsave(filename = "results/corr-social-economic-environment.png",
 
 physical_environment = mental_health %>% 
   select(-c(fips, state, name)) %>% 
-  select(average_daily_pm2.5, presence_of_violation, perc_severe_housing_problems,
-         severe_housing_cost_burden, overcrowding,
-         inadequate_facilities, perc_drive_alone, perc_long_commute_drives_alone,
-         perc_rural)
+  select(average_daily_pm2.5, presence_of_violation, 
+         perc_severe_housing_problems, severe_housing_cost_burden, 
+         overcrowding, inadequate_facilities, perc_drive_alone, 
+         perc_long_commute_drives_alone, perc_rural)
 
 p8 = ggcorrplot(cor(physical_environment),
            colors = c("blue", "white", "red"), 

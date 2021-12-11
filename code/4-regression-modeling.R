@@ -1,10 +1,9 @@
 # load libraries
 library(tidyverse)
-library(glmnetUtils)                              # to run ridge and lasso
+library(glmnetUtils)                             
 library(pROC)   
-source("code/functions/plot_glmnet.R")            # for lasso/ridge trace plots
+source("code/functions/plot_glmnet.R")       
 
-View(mental_health_train)
 # read in the training data
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
 
@@ -12,7 +11,8 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # running a logistic regression
-glm_fit = glm(mentally_unhealthy ~ . - mentally_unhealthy_days - physically_unhealthy_days, 
+glm_fit = glm(mentally_unhealthy ~ . -mentally_unhealthy_days
+                                     -physically_unhealthy_days, 
               family = "binomial",
               data = mental_health_train)
 
@@ -26,8 +26,6 @@ fitted_probabilities = predict(glm_fit,
                                newdata = mental_health_test,
                                type = "response")   
 
-view(fitted_probabilities)
-
 # make predictions 
 predictions = as.numeric(fitted_probabilities > 0.5)
 head(predictions)
@@ -36,7 +34,7 @@ head(predictions)
 mental_health_test = mental_health_test %>% 
   mutate(predicted_mental_health = predictions)
 
-# then calculate misclassification rate
+# calculate misclassification rate
 mental_health_test %>% 
   summarise(mean(mentally_unhealthy != predicted_mental_health))
 
@@ -49,19 +47,25 @@ fpr = 19 / (370 + 19)
 fnr = 17 / (68 + 17)
 
 # ROC curve
-roc_data = roc(mental_health_test %>% pull(mentally_unhealthy), 
+roc_data = roc(mental_health_test %>% 
+                 pull(mentally_unhealthy), 
                fitted_probabilities) 
 # error message isn't warning? just showing what it is doing?
-
-tibble(FPR = 1-roc_data$specificities,
+p_roc = tibble(FPR = 1-roc_data$specificities,
        TPR = roc_data$sensitivities) %>%
   ggplot(aes(x = FPR, y = TPR)) + 
   geom_line() + 
-  geom_abline(slope = 1, linetype = "dashed") +
+  xlab("False Positive Rate (FPR)") +
+  ylab("True Positive Rate (TPR)") +
+  geom_abline(slope = 1, linetype = "dashed", color = "red") +
   geom_point(x = fpr, y = 1-fnr, colour = "red") +
   theme_bw()
 
-# need to save this into github results folder 
+ggsave(filename = "results/roc-table.png", 
+       plot = p_roc, 
+       device = "png", 
+       width = 5, 
+       height = 5)
 
 # print the AUC
 roc_data$auc

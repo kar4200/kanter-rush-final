@@ -14,7 +14,8 @@ mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # fit classification tree based on Gini Index with default "control" parameters
 set.seed(1)
-mental_health_fit = rpart(mentally_unhealthy ~ . - mentally_unhealthy_days -physically_unhealthy_days,
+mental_health_fit = rpart(mentally_unhealthy ~ . -mentally_unhealthy_days 
+                                                 -physically_unhealthy_days,
                  method = "class",
                  parms = list(split = "gini"),
                  data = mental_health_train)
@@ -23,7 +24,8 @@ rpart.plot(mental_health_fit)
 
 # find deepest possible tree (to begin to find optimal tree)
 set.seed(1)
-mental_health_fit_deep = rpart(mentally_unhealthy ~ . - mentally_unhealthy_days -physically_unhealthy_days,
+mental_health_fit_deep = rpart(mentally_unhealthy ~ . -mentally_unhealthy_days 
+                                                      -physically_unhealthy_days,
                    method = "class",
                    control = rpart.control(minsplit = 2, 
                                            minbucket = 1,
@@ -76,7 +78,8 @@ rpart.plot(optimal_tree)
 dev.off()
 
 # misclassification
-pred_decision = predict(optimal_tree, newdata = mental_health_test, type = "class")
+pred_decision = predict(optimal_tree, 
+                        newdata = mental_health_test, type = "class")
 misclassification_decision <- mean(pred_decision != mental_health_test$mentally_unhealthy) # 9.07
 
 # RANDOM FORESTS

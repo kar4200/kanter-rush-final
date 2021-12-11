@@ -9,9 +9,6 @@ library(tidyverse)
 mental_health = read_csv("data/clean/mental_health_clean.csv")
 health_total = read_csv("data/clean/health_data_clean.csv")
 
-# to do:
-# pick features and explore relationship with mentally_unhealthy response
-
 # create histogram of case fatality rate
 # save the mean
 mean <- mean(mental_health$mentally_unhealthy_days)
@@ -20,15 +17,16 @@ cutoff <- 4.5
 # plot mentally_unhealthy days and draw line at the mean
 p = mental_health %>%
   ggplot(aes(x = mentally_unhealthy_days)) + 
-  geom_histogram() +
+  geom_histogram(fill = "light grey", 
+                 col = "black") +
   geom_vline(xintercept = mean,
              linetype = "dashed",
              col = "red") +
   geom_vline(xintercept = cutoff,
              linetype = "dashed",
              col = "blue") +
-  labs(x = "Mentally Unhealthy Days (per month)", 
-       y = "Number of Counties") +
+  labs(x = "Mentally Unhealthy Days (Per Month)", 
+       y = "Number of Counties") + 
   theme_bw()
 
 # save the histogram
@@ -161,3 +159,6 @@ mental_health %>%
   save_kable("high-days.pdf")
 
 # need to figure out how to save table #s differently (both Table 1 right now)
+
+# pick features and explore relationship with mentally_unhealthy response
+

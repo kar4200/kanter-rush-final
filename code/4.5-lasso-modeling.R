@@ -1,19 +1,19 @@
 # load libraries
-library(glmnetUtils)                    # to run ridge and lasso
-source("code/functions/plot_glmnet.R")  # for lasso/ridge trace plots
-library(tidyverse)                      # for everything else
+library(glmnetUtils)                    
+source("code/functions/plot_glmnet.R")  
+library(tidyverse)                      
 
 # read in the training data
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
 
 # run lasso regression
 set.seed(1)
-lasso_fit = cv.glmnet(mentally_unhealthy ~ . - mentally_unhealthy_days - physically_unhealthy_days,   
+lasso_fit = cv.glmnet(mentally_unhealthy ~ . -mentally_unhealthy_days 
+                                             -physically_unhealthy_days,   
                       alpha = 1,                 
                       nfolds = 10,               
                       data = mental_health_train)
 
-# removing physically unhealthy days because it is strongly correlated with mentally unhealthy days 
 
 plot(lasso_fit)
 plot_glmnet(lasso_fit, mental_health_train, features_to_plot = 10)
