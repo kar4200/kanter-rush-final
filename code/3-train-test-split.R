@@ -15,6 +15,8 @@ train_samples = sample(1:n, round(0.8*n))
 mental_health_train = mental_health_removed %>% 
   filter(row_number() %in% train_samples)
 
+View(mental_health_test)
+
 # test set
 mental_health_test = mental_health_removed %>% 
   filter(!(row_number() %in% train_samples))
