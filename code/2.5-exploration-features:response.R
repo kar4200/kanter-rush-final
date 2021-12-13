@@ -4,16 +4,20 @@ library(tidyverse)
 # read in the cleaned data
 mental_health = read_csv("data/clean/mental_health_clean.csv")
 
+# read in training data 
+mental_health_train = read_csv("data/clean/mental_health_train.csv")
+
 # health outcomes 
 # physically unhealthy days
-p9 = ggplot(data = mental_health,                
+p9 = ggplot(data = mental_health_train,                
        aes(x = physically_unhealthy_days, 
            y = mentally_unhealthy)) +
   geom_point() +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
-  theme_bw()
+  theme_bw() +
+  labs(x = "Physically Unhealthy Days", y = "Mentally Unhealthy")
 
 ggsave(filename = "results/physically_unhealthy_days.png", 
        plot = p9, 
@@ -24,35 +28,16 @@ ggsave(filename = "results/physically_unhealthy_days.png",
 colnames(mental_health)
 
 # health behaviors 
-# insufficient sleep
-p10 = ggplot(data = mental_health,                
-            aes(x = perc_insufficient_sleep, 
-                y = mentally_unhealthy)) +
-  geom_point() +
-  xlab("Insufficient Sleep (%)") +
-  ylab("Mentally Unhealthy") +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
-              color = "red") + 
-  theme_bw()
-
-ggsave(filename = "results/insufficient_sleep.png", 
-       plot = p10, 
-       device = "png", 
-       width = 5, 
-       height = 5)
-
 # smoking 
-p11 = ggplot(data = mental_health,                
+p11 = ggplot(data = mental_health_train,                
              aes(x = perc_smokers, 
                  y = mentally_unhealthy)) +
   geom_point() +
-  xlab("Insufficient Sleep (%)") +
-  ylab("Smokers (%)") +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
-  theme_bw()
+  theme_bw() +
+  labs(x = "Percentage of adults that reported currently smoking", y = "Mentally Unhealthy")
 
 ggsave(filename = "results/smoking.png", 
        plot = p11, 
@@ -60,31 +45,13 @@ ggsave(filename = "results/smoking.png",
        width = 5, 
        height = 5)
 
-# obese 
-p12 = ggplot(data = mental_health,                
-             aes(x = perc_obese, 
-                 y = mentally_unhealthy)) +
-  geom_point() +
-  xlab("Obese (%)") +
-  ylab("Mentally Unhealthy") +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
-              color = "red") + 
-  theme_bw()
-
-ggsave(filename = "results/obese.png", 
-       plot = p12, 
-       device = "png", 
-       width = 5, 
-       height = 5)
-
 # clinical care
 # mhp rate  
-p13 = ggplot(data = mental_health,                
+p13 = ggplot(data = mental_health_train,                
              aes(x = mhp_rate, 
                  y = mentally_unhealthy)) +
   geom_point() +
-  xlab("Mental Health Provider Access (%)") +
+  xlab("Mental Health Providers per 100,000 population") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
@@ -99,7 +66,7 @@ ggsave(filename = "results/mhp_rate.png",
 
 # social / economic environment 
 # household income 
-p14 = ggplot(data = mental_health,                
+p14 = ggplot(data = mental_health_train,                
              aes(x = household_income, 
                  y = mentally_unhealthy)) +
   geom_point() +
@@ -117,11 +84,11 @@ ggsave(filename = "results/household_income.png",
        height = 5)
 
 # association rate 
-p15 = ggplot(data = mental_health,                
+p15 = ggplot(data = mental_health_train,                
              aes(x = association_rate, 
                  y = mentally_unhealthy)) +
   geom_point() +
-  xlab("Association Rate") +
+  xlab("Social Association Rate") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
@@ -136,11 +103,11 @@ ggsave(filename = "results/association_rate.png",
 
 # physical environment 
 # inadequate facilities 
-p16 = ggplot(data = mental_health,                
+p16 = ggplot(data = mental_health_train,                
              aes(x = inadequate_facilities, 
                  y = mentally_unhealthy)) +
   geom_point() +
-  xlab("Inadequate Facilities") +
+  xlab("Percentage of households with lack of kitchen or plumbing facilities") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
