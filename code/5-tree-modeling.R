@@ -125,7 +125,7 @@ rf_fit_tuned = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_d
 save(rf_fit_tuned, file = "results/rf_fit_tuned.Rda")
 
 # variable importance 
-var_imp = varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8)
+var_imp = varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.5)
 # find how to save this
 
 # misclassification error
