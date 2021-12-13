@@ -102,7 +102,6 @@ max(mental_health_clean$mentally_unhealthy_days) # 6
 mental_health_clean = mental_health_clean %>%  
   mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 4.5, 1, 0))
 
-View(mental_health_clean)
 # write cleaned data to file
 write_csv(mental_health_clean, file = "data/clean/mental_health_clean.csv")
   
