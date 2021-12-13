@@ -11,7 +11,7 @@ health_total = read_csv("data/clean/health_data_clean.csv")
 
 # create histogram of case fatality rate
 # save the mean
-mean <- mean(mental_health$mentally_unhealthy_days)
+mean <- mean(mental_health_train$mentally_unhealthy_days)
 cutoff <- 4.5
 
 # plot mentally_unhealthy days and draw line at the mean
@@ -36,7 +36,7 @@ ggsave(filename = "results/response-histogram.png",
        width = 5, 
        height = 3)
 
-# create a heatmap of mentally unhealthy days for cleaned dataset
+# create a heatmap of mentally unhealthy days for cleaned dataset (this is just showing what the data looks like)
 p2 = map_data("county") %>%
   as_tibble() %>% 
   left_join(mental_health %>% 
