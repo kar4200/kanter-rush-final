@@ -11,8 +11,14 @@ set.seed(1)
 
 ridge_fit = cv.glmnet(mentally_unhealthy ~ . - mentally_unhealthy_days 
                                              - physically_unhealthy_days,
-                      alpha = 0, nfolds = 10, family = "binomial", 
-                      type.measure = "class",  data = mental_health_train)
+                      alpha = 0, 
+                      nfolds = 10, 
+                      family = "binomial", 
+                      type.measure = "class",  
+                      data = mental_health_train)
+
+plot(ridge_fit)
+plot_glmnet(ridge_fit, mental_health_train, features_to_plot = 10, lambda = ridge_fit$lambda.1se)
 
 coef(ridge_fit, s = "lambda.1se") 
 

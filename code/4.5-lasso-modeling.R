@@ -11,12 +11,16 @@ set.seed(1)
 lasso_fit = cv.glmnet(mentally_unhealthy ~ . -mentally_unhealthy_days 
                                              -physically_unhealthy_days,   
                       alpha = 1,                 
-                      nfolds = 10,               
+                      nfolds = 10,  
+                      family = "binomial",
+                      type.measure = "class",
                       data = mental_health_train)
 
 
 plot(lasso_fit)
-plot_glmnet(lasso_fit, mental_health_train, features_to_plot = 10)
+plot_glmnet(lasso_fit, mental_health_train, features_to_plot = 10, lambda = lasso_fit$lambda.1se)
+
+lasso_fit$nzero[lasso_fit$lambda == lasso_fit$lambda.1se]
 
 # save the lasso fit object
 save(lasso_fit, file = "results/lasso_fit.Rda")
