@@ -61,7 +61,7 @@ optimal_tree_info = cp_table %>%
   arrange(nsplit) %>% 
   head(1)
 
-optimal_tree_info$nsplit # 10 splits in the optimal tree
+optimal_tree_info$nsplit # 7 splits in the optimal tree
 
 # prune the optimal tree
 optimal_tree = prune(mental_health_fit_deep, cp = optimal_tree_info$CP)
@@ -90,7 +90,7 @@ rf_fit$mtry
 
 # tune random forests
 set.seed(1)
-mvalues = seq.int(1, 60, by = 5)
+mvalues = seq.int(1, 58, by = 5)
 oob_errors = numeric(length(mvalues))
 ntree = 100
 for(idx in 1:length(mvalues)){
@@ -117,7 +117,7 @@ dev.off()
 # tune random forest
 set.seed(1)
 rf_fit_tuned = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
-                            mtry = 21, 
+                            mtry = 36, 
                             ntree = 500, 
                             importance = TRUE,
                             data = mental_health_train)
