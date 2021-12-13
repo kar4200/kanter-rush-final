@@ -25,8 +25,6 @@ ggsave(filename = "results/physically_unhealthy_days.png",
        width = 5, 
        height = 5)
 
-colnames(mental_health)
-
 # health behaviors 
 # smoking 
 p11 = ggplot(data = mental_health_train,                

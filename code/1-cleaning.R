@@ -23,7 +23,9 @@ health_data_clean = health_data %>%
               Population, 
               `Cohort Size`, 
               `Labor Force`,
-              `Annual Average Violent Crimes`)), 
+              `Annual Average Violent Crimes`,
+              `Severe Housing Cost Burden`,
+              `% Alcohol-Impaired`)), 
          c(`Income Ratio`, 
            `Presence of violation`)) %>%  
   rename(fips = FIPS, state = State, name = County) %>% 
