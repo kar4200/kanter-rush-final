@@ -36,8 +36,12 @@ mental_health_test = mental_health_test %>%
   mutate(predicted_mental_health = predictions)
 
 # calculate misclassification rate
-mental_health_test %>% 
+misclassification_regression = mental_health_test %>% 
   summarise(mean(mentally_unhealthy != predicted_mental_health))
+
+write_csv(misclassification_regression, 
+          file = "results/misclassification_regression.csv")
+
 
 # confusion matrix 
 mental_health_test %>% 

@@ -58,3 +58,26 @@ beta_hat_std %>%
         caption = "Top 10 features selected by lasso and their coefficients") %>%
   save_kable("lasso-coefficients.pdf")
 
+
+# visualize the fitted coefficients as a function of lambda
+probabilities = predict(lasso_fit,              
+                        newdata = mental_health_test,  
+                        s = "lambda.1se",       
+                        type = "response") %>%   
+  as.numeric()                                   
+head(probabilities)
+
+# make predictions 
+predictions = as.numeric(probabilities > 0.5)
+head(predictions)
+
+# evaluating the classifier 
+mental_health_test = mental_health_test %>% 
+  mutate(predicted_mental_health = predictions)
+
+# calculate misclassification rate
+misclassification_lasso = mental_health_test %>% 
+  summarise(mean(mentally_unhealthy != predicted_mental_health))
+
+write_csv(misclassification_lasso, file = "results/misclassification_lasso.csv")
+

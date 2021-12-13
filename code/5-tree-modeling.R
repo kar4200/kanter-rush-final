@@ -80,7 +80,8 @@ dev.off()
 # misclassification
 pred_decision = predict(optimal_tree, 
                         newdata = mental_health_test, type = "class")
-misclassification_decision <- mean(pred_decision != mental_health_test$mentally_unhealthy) # 9.07
+misclassification_decision = as_tibble(mean(pred_decision != mental_health_test$mentally_unhealthy)) # 9.07
+write_csv(misclassification_decision, file = "results/misclassification_decision.csv")
 
 # RANDOM FORESTS
 set.seed(1)
@@ -130,5 +131,8 @@ var_imp = varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.5)
 
 # misclassification error
 pred_rf = predict(rf_fit_tuned, newdata = mental_health_test, type = "class")
-misclassification_rf <- mean(pred_rf != mental_health_test$mentally_unhealthy) # 7.38
+
+misclassification_rf = as_tibble(mean(pred_rf != mental_health_test$mentally_unhealthy)) # 7.38
+write_csv(misclassification_rf, file = "results/misclassification_rf.csv")
+
 
