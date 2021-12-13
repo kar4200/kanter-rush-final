@@ -7,22 +7,13 @@ misclassification_rf = read_csv("results/misclassification_rf.csv")
 
 # renaming column names 
 misclassification_regression = misclassification_regression %>% 
-  rename(value = `mean(mentally_unhealthy != predicted_mental_health)`) %>%
-  mutate(value = as.numeric(value))
+  rename(value = `mean(mentally_unhealthy != predicted_mental_health)`)
  
 misclassification_ridge = misclassification_ridge %>% 
-   rename(value = `mean(mentally_unhealthy != predicted_mental_health)`) %>%
-   mutate(value = as.numeric(value))
+   rename(value = `mean(mentally_unhealthy != predicted_mental_health)`)
  
 misclassification_lasso = misclassification_lasso %>% 
-   rename(value = `mean(mentally_unhealthy != predicted_mental_health)`) %>%
-   mutate(value = as.numeric(value))
-
-misclassification_decision = misclassification_decision %>%
-   mutate(value = as.numeric(value))
- 
-misclassification_rf = misclassification_rf %>%
-   mutate(value = as.numeric(value))
+   rename(value = `mean(mentally_unhealthy != predicted_mental_health)`)
 
 # creating table of misclassification errors 
 Model = c("Regression", "Ridge", "Lasso", "Decision", "Random Forest")
