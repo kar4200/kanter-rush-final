@@ -27,7 +27,6 @@ misclassification =
   kable(format = "latex",
         booktabs = TRUE, 
         digits = 4,
-        col.names = c("Feature", "Coefficient"),
-        caption = "Misclassification errors for each model.") %>%
+        col.names = c("Feature", "Coefficient")) %>%
   save_kable("misclassification-error.pdf")
  
