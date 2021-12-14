@@ -42,20 +42,19 @@ misclassification_regression = mental_health_test %>%
 write_csv(misclassification_regression, 
           file = "results/misclassification_regression.csv")
 
-
 # confusion matrix 
 mental_health_test %>% 
   select(mentally_unhealthy, predicted_mental_health) %>%
   table()
 
-fpr = 20 / (370 + 20)
-fnr = 19 / (65 + 19)
+fpr = 24 / (283 + 24)
+fnr = 38 / (38 + 129)
 
 # ROC curve
 roc_data = roc(mental_health_test %>% 
                  pull(mentally_unhealthy), 
                fitted_probabilities) 
-# error message isn't warning? just showing what it is doing?
+
 p_roc = tibble(FPR = 1-roc_data$specificities,
        TPR = roc_data$sensitivities) %>%
   ggplot(aes(x = FPR, y = TPR)) + 
