@@ -3,7 +3,7 @@ library(tidyverse)
 library(ggcorrplot)
 
 # read in the cleaned data
-mental_health = read_csv("data/clean/mental_health_clean.csv")
+mental_health_clean = read_csv("data/clean/mental_health_clean.csv")
 
 # read in training data 
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
@@ -28,7 +28,7 @@ ggsave(filename = "results/corr-health_outcomes.png",
        height = 5)
 
 # correlated features - health-behavior
-health_behavior = mental_health %>% 
+health_behavior = mental_health_train %>% 
   select(perc_smokers, perc_obese,
          perc_physically_inactive, 
          perc_excessive_drinking, 
