@@ -6,16 +6,17 @@ library(maps)                           # for creating maps
 library(tidyverse)
 
 # read in the cleaned data
-mental_health = read_csv("data/clean/mental_health_clean.csv")
+mental_health_clean = read_csv("data/clean/mental_health_clean.csv")
 health_total = read_csv("data/clean/health_data_clean.csv")
 
-# create histogram of case fatality rate
-# save the mean
-mean <- mean(mental_health_train$mentally_unhealthy_days)
-cutoff <- 4.5
+# create histogram of mentally unhealthy days in dataset
+mean <- mean(mental_health_clean$mentally_unhealthy_days) # save the mean
+sd(mental_health_clean$mentally_unhealthy_days) # 0.58
+# slightly above 1 standard deviation from the mean (class imbalance + better classification of yes/no)
+cutoff <- 4.2 # save the cutoff
 
 # plot mentally_unhealthy days and draw line at the mean
-p = mental_health %>%
+p = mental_health_clean %>%
   ggplot(aes(x = mentally_unhealthy_days)) + 
   geom_histogram(fill = "light grey", 
                  col = "black") +
@@ -39,7 +40,7 @@ ggsave(filename = "results/response-histogram.png",
 # create a heatmap of mentally unhealthy days for cleaned dataset (this is just showing what the data looks like)
 p2 = map_data("county") %>%
   as_tibble() %>% 
-  left_join(mental_health %>% 
+  left_join(mental_health_clean %>% 
               rename(region = state, 
                      subregion = name,
                      `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
@@ -89,7 +90,7 @@ ggsave(filename = "results/map-total.png",
 wv = map_data("county") %>%
   as_tibble() %>%
   filter(region == "west virginia") %>%
-  left_join(mental_health %>% 
+  left_join(mental_health_clean %>% 
               rename(region = state, 
                      subregion = name,
                      `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
@@ -114,7 +115,7 @@ ggsave(filename = "results/west-va.png",
 nd = map_data("county") %>%
   as_tibble() %>%
   filter(region == "north dakota") %>%
-  left_join(mental_health %>% 
+  left_join(mental_health_clean %>% 
               rename(region = state, 
                      subregion = name,
                      `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
@@ -137,25 +138,23 @@ ggsave(filename = "results/north-dakota.png",
        height = 4)
 
 # examine top 10 counties with lowest mentally unhealthy days
-mental_health %>%
+mental_health_clean %>%
   arrange(mentally_unhealthy_days) %>%
   select(state, name, mentally_unhealthy_days) %>%
   head(10) %>%
   kable(format = "latex",
         booktabs = TRUE, 
-        col.names = c("State", "County", "Mentally Unhealthy Days"),
-        caption = "Top 10 counties with lowest mentally unhealthy days") %>%
+        col.names = c("State", "County", "Mentally Unhealthy Days")) %>%
   save_kable("low-days.pdf")
 
 # examine top 10 counties with highest mentally unhealthy days
-mental_health %>%
+mental_health_clean %>%
   arrange(desc(mentally_unhealthy_days)) %>%
   select(state, name, mentally_unhealthy_days) %>%
   head(10) %>%
   kable(format = "latex",
         booktabs = TRUE, 
-        col.names = c("State", "County", "Mentally Unhealthy Days"),
-        caption = "Top 10 counties with highest mentally unhealthy days") %>%
+        col.names = c("State", "County", "Mentally Unhealthy Days")) %>%
   save_kable("high-days.pdf")
 
 # need to figure out how to save table #s differently (both Table 1 right now)
