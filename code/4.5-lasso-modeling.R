@@ -6,6 +6,9 @@ library(tidyverse)
 # read in the training data
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
 
+# read in the test
+mental_health_test = read_csv("data/clean/mental_health_test.csv")
+
 # run lasso regression
 set.seed(1)
 lasso_fit = cv.glmnet(mentally_unhealthy ~ . -mentally_unhealthy_days 
@@ -54,8 +57,7 @@ beta_hat_std %>%
   head(10) %>%
   kable(format = "latex",
         booktabs = TRUE, 
-        col.names = c("Feature", "Coefficient"),
-        caption = "Top 10 features selected by lasso and their coefficients") %>%
+        col.names = c("Feature", "Coefficient")) %>%
   save_kable("lasso-coefficients.pdf")
 
 
@@ -65,7 +67,6 @@ probabilities = predict(lasso_fit,
                         s = "lambda.1se",       
                         type = "response") %>%   
   as.numeric()                                   
-head(probabilities)
 
 # make predictions 
 predictions = as.numeric(probabilities > 0.5)

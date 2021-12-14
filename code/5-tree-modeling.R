@@ -91,7 +91,7 @@ rf_fit$mtry
 
 # tune random forests
 set.seed(1)
-mvalues = seq.int(1, 58, by = 5)
+mvalues = seq.int(1, 60, by = 5)
 oob_errors = numeric(length(mvalues))
 ntree = 100
 for(idx in 1:length(mvalues)){
@@ -134,5 +134,3 @@ pred_rf = predict(rf_fit_tuned, newdata = mental_health_test, type = "class")
 
 misclassification_rf = as_tibble(mean(pred_rf != mental_health_test$mentally_unhealthy)) # 7.38
 write_csv(misclassification_rf, file = "results/misclassification_rf.csv")
-
-
