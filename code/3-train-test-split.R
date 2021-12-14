@@ -1,10 +1,10 @@
 # read in the cleaned data
-mental_health = read_csv("data/clean/mental_health_clean.csv")
+mental_health_clean = read_csv("data/clean/mental_health_clean.csv")
 
 # set seed
 set.seed(1)
 
-mental_health_removed = mental_health %>%  
+mental_health_removed = mental_health_clean %>%  
   select(-fips, -state, -name)
 
 # split into train and test (80% for train and 20% for test)
