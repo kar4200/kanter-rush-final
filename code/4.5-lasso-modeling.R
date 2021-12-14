@@ -1,7 +1,8 @@
 # load libraries
 library(glmnetUtils)                    
 source("code/functions/plot_glmnet.R")  
-library(tidyverse)                      
+library(tidyverse)      
+library(kableExtra)
 
 # read in the training data
 mental_health_train = read_csv("data/clean/mental_health_train.csv")

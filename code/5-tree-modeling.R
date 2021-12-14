@@ -118,7 +118,7 @@ dev.off()
 # tune random forest
 set.seed(1)
 rf_fit_tuned = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
-                            mtry = 36, 
+                            mtry = 21, 
                             ntree = 500, 
                             importance = TRUE,
                             data = mental_health_train)
