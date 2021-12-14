@@ -2,7 +2,7 @@
 library(tidyverse)
 
 # read in the cleaned data
-mental_health = read_csv("data/clean/mental_health_clean.csv")
+mental_health_clean = read_csv("data/clean/mental_health_clean.csv")
 
 # read in training data 
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
@@ -81,24 +81,6 @@ ggsave(filename = "results/household_income.png",
        width = 5, 
        height = 5)
 
-# association rate 
-p15 = ggplot(data = mental_health_train,                
-             aes(x = association_rate, 
-                 y = mentally_unhealthy)) +
-  geom_point() +
-  xlab("Social Association Rate") +
-  ylab("Mentally Unhealthy") +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
-              color = "red") + 
-  theme_bw()
-
-ggsave(filename = "results/association_rate.png", 
-       plot = p15, 
-       device = "png", 
-       width = 5, 
-       height = 5)
-
 # physical environment 
 # inadequate facilities 
 p16 = ggplot(data = mental_health_train,                
@@ -114,6 +96,26 @@ p16 = ggplot(data = mental_health_train,
 
 ggsave(filename = "results/inadequate_facilities.png", 
        plot = p16, 
+       device = "png", 
+       width = 5, 
+       height = 5)
+
+p17 = ggplot(data = mental_health_train,                
+             aes(x = perc_excessive_drinking, 
+                 y = mentally_unhealthy)) +
+  geom_point() +
+  geom_jitter()+
+  xlab("Percentage of adults that reported excessive drinking") +
+  ylab("Mentally Unhealthy") +
+  stat_smooth(method="glm", se=FALSE, 
+              method.args = list(family=binomial), 
+              color = "red") + 
+  theme_bw()
+
+# included geom_jitter() to better see the distribution of the data
+
+ggsave(filename = "results/excessive-drinking.png", 
+       plot = p17, 
        device = "png", 
        width = 5, 
        height = 5)
