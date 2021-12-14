@@ -47,8 +47,8 @@ mental_health_test %>%
   select(mentally_unhealthy, predicted_mental_health) %>%
   table()
 
-fpr = 24 / (283 + 24)
-fnr = 38 / (38 + 129)
+fpr = 20 / (370 + 20)
+fnr = 19 / (19 + 65)
 
 # ROC curve
 roc_data = roc(mental_health_test %>% 
