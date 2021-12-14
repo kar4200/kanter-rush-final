@@ -11,9 +11,7 @@ health_total = read_csv("data/clean/health_data_clean.csv")
 
 # create histogram of mentally unhealthy days in dataset
 mean <- mean(mental_health_clean$mentally_unhealthy_days) # save the mean
-sd(mental_health_clean$mentally_unhealthy_days) # 0.58
-# slightly above 1 standard deviation from the mean (class imbalance + better classification of yes/no)
-cutoff <- 4.2 # save the cutoff
+cutoff <- 4.5 # save the cutoff
 
 # plot mentally_unhealthy days and draw line at the mean
 p = mental_health_clean %>%

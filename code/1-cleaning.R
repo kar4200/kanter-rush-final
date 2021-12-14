@@ -96,11 +96,11 @@ mental_health_clean %>%
 
 min(mental_health_clean$mentally_unhealthy_days) # 2.5
 max(mental_health_clean$mentally_unhealthy_days) # 6
+sd(mental_health_clean$mentally_unhealthy_days) # 0.58
 
-# set threshold for mentally unhealthy (yes vs. no) at 4.2 (see exploration response)
+# set threshold for mentally unhealthy (yes vs. no) at 4.5 (1 standard deviation above the mean)
 mental_health_clean = mental_health_clean %>%  
-  mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 4.2, 1, 0))
+  mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 4.5, 1, 0))
 
 # write cleaned data to file
 write_csv(mental_health_clean, file = "data/clean/mental_health_clean.csv")
-  
