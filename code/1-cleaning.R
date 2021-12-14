@@ -20,14 +20,11 @@ health_data_clean = health_data %>%
   select(-c(starts_with(c("95%","Quartile", "#")), 
             ends_with(c("(Black)", "(White)", "(Hispanic)", "Ratio")), 
             c(Unreliable, 
-              Population, 
-              `Cohort Size`, 
-              `Labor Force`,
+              `Cohort Size`,
               `Annual Average Violent Crimes`,
               `Severe Housing Cost Burden`,
               `% Alcohol-Impaired`)), 
-         c(`Income Ratio`, 
-           `Presence of violation`)) %>%  
+         c(`Income Ratio`)) %>%  
   rename(fips = FIPS, state = State, name = County) %>% 
   mutate(fips = as.double(fips))
 
@@ -38,12 +35,13 @@ feature_data_clean = feature_data %>%
   select(-c(starts_with(c("95%", "#")), 
          ends_with(c("(Black)","(White)","(Hispanic)",   
                       "Mortality", "Mortality Rate", "Ratio")), 
-         c(`Segregation Index`, 
-             `% Disconnected Youth`, 
+         c(`% Disconnected Youth`, 
              `Segregation index`, 
+             `Segregation Index`, 
              `Homicide Rate`, 
              `Firearm Fatalities Rate`, 
-             `Other PCP Rate`))) %>% 
+             `Other PCP Rate`, 
+             `Population`))) %>% 
   rename(fips = FIPS, state = State, name = County) %>% 
   mutate(fips = as.double(fips))
 
@@ -70,15 +68,14 @@ mental_health_clean = mental_health %>%
             `20th Percentile Income`, 
             `% Frequent Physical Distress`, 
             `% Uninsured...56`, 
-            `% Uninsured...60`, 
-            Population)) %>% 
+            `% Uninsured...60`)) %>% 
   na.omit() %>% 
   rename(name = name.x, 
          prevent_hosp_rate = `Preventable Hosp. Rate`,
          perc_long_commute_drives_alone = `% Long Commute - Drives Alone`)
 
 # table to determine which columns to remove 
-colSums(is.na(mental_health))
+colSums(is.na(mental_health_clean))
 
 # rename columns for tidyness 
 names(mental_health_clean) = gsub(pattern = "% ", replacement = "perc ", 
