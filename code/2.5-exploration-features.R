@@ -19,7 +19,8 @@ p4 = ggcorrplot(cor(health_outcomes),
                 type = "lower",
                 lab = TRUE,
                 lab_size = 4,
-                ggtheme = ggplot2::theme_bw())
+                ggtheme = ggplot2::theme_bw()) +
+  ggtitle("Health")
 
 ggsave(filename = "results/corr-health_outcomes.png", 
        plot = p4, 
@@ -42,7 +43,8 @@ p5 = ggcorrplot(cor(health_behavior),
                 lab = TRUE,
                 lab_size = 2,
                 tl.cex = 7,
-                ggtheme = ggplot2::theme_bw())
+                ggtheme = ggplot2::theme_bw()) +
+  ggtitle("Health Behavior")
 
 ggsave(filename = "results/corr-health_behavior.png", 
        plot = p5, 
@@ -63,7 +65,8 @@ p6 = ggcorrplot(cor(clinical_care),
            lab = TRUE,
            lab_size = 3,
            tl.cex = 8,
-           ggtheme = ggplot2::theme_bw())
+           ggtheme = ggplot2::theme_bw()) +
+  ggtitle("Clinical Care")
 
 ggsave(filename = "results/corr-clinical-care.png", 
        plot = p6, 
@@ -91,7 +94,8 @@ p7 = ggcorrplot(cor(social_economic_environment),
            lab = TRUE,
            lab_size = 1.5,
            tl.cex = 6.5,
-           ggtheme = ggplot2::theme_bw())
+           ggtheme = ggplot2::theme_bw()) +
+  ggtitle("Social and Economic Environment")
 
 ggsave(filename = "results/corr-social-economic-environment.png", 
        plot = p7, 
@@ -113,7 +117,8 @@ p8 = ggcorrplot(cor(physical_environment),
            lab_size = 2,
            tl.cex = 6.5,
            outline.color = "gray",
-           ggtheme = ggplot2::theme_bw())
+           ggtheme = ggplot2::theme_bw()) +
+  ggtitle("Physical Environment")
 
 ggsave(filename = "results/corr-physical-environment.png", 
        plot = p8, 
