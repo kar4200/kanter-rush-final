@@ -26,7 +26,8 @@ p = mental_health_clean %>%
              col = "blue") +
   labs(x = "Mentally Unhealthy Days (Per Month)", 
        y = "Number of Counties") + 
-  theme_bw()
+  theme_bw() +
+  ggtitle("Histogram of Mentally Unhealthy Days")
 
 # save the histogram
 ggsave(filename = "results/response-histogram.png", 
@@ -52,7 +53,8 @@ p2 = map_data("county") %>%
   geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
   scale_fill_gradient(low = "blue", high = "red") +
-  theme_void()
+  theme_void() +
+  ggtitle("Heat Map - Cleaned Dataset")
 
 ggsave(filename = "results/map-clean.png", 
        plot = p2, 
@@ -76,7 +78,8 @@ p3 = map_data("county") %>%
   geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
   scale_fill_gradient(low = "blue", high = "red") +
-  theme_void()
+  theme_void() +
+  ggtitle("Heat Map - Full Dataset")
 
 ggsave(filename = "results/map-total.png", 
        plot = p3, 
@@ -102,7 +105,8 @@ wv = map_data("county") %>%
   geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
   scale_fill_gradient(low = "blue", high = "red") +
-  theme_void()
+  theme_void() +
+  ggtitle("West Virginia Heat Map")
 
 ggsave(filename = "results/west-va.png", 
        plot = wv, 
@@ -127,7 +131,8 @@ nd = map_data("county") %>%
   geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
   scale_fill_gradient(low = "blue", high = "red") +
-  theme_void()
+  theme_void() +
+  ggtitle("North Dakota Heat Map")
 
 ggsave(filename = "results/north-dakota.png", 
        plot = nd, 
