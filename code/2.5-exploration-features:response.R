@@ -91,13 +91,13 @@ p16 = ggplot(data = mental_health_train,
              aes(x = inadequate_facilities, 
                  y = mentally_unhealthy)) +
   geom_point() +
-  xlab("Percentage of households with lack of kitchen or plumbing facilities") +
+  xlab("Percentage of households without kitchen or plumbing facilities") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
   theme_bw() +
-  ggtitle("Figure 5: Physical Environment")
+  ggtitle("Figure 5: Inadequate Household Facilities")
 
 ggsave(filename = "results/inadequate_facilities.png", 
        plot = p16, 
