@@ -70,7 +70,7 @@ probabilities = predict(lasso_fit,
   as.numeric()                                   
 
 # make predictions 
-predictions = as.numeric(probabilities > 0.5)
+predictions = as.numeric(probabilities > 0.3)
 head(predictions)
 
 # evaluating the classifier 
@@ -79,7 +79,7 @@ mental_health_test = mental_health_test %>%
 
 # calculate misclassification rate
 misclassification_lasso = mental_health_test %>% 
-  summarise(mean(mentally_unhealthy != predicted_mental_health))
+  summarise(mean(mentally_unhealthy != predicted_mental_health)) # lowering threshold increases misclass error
 
 write_csv(misclassification_lasso, file = "results/misclassification_lasso.csv")
 
