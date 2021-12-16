@@ -13,6 +13,7 @@ p9 = ggplot(data = mental_health_train,
        aes(x = physically_unhealthy_days, 
            y = mentally_unhealthy)) +
   geom_point() +
+  geom_jitter() +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
@@ -32,6 +33,7 @@ p11 = ggplot(data = mental_health_train,
              aes(x = perc_smokers, 
                  y = mentally_unhealthy)) +
   geom_point() +
+  geom_jitter() +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
@@ -51,6 +53,7 @@ p13 = ggplot(data = mental_health_train,
              aes(x = mhp_rate, 
                  y = mentally_unhealthy)) +
   geom_point() +
+  geom_jitter() +
   xlab("Mental Health Providers per 100,000 population") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
@@ -71,6 +74,7 @@ p14 = ggplot(data = mental_health_train,
              aes(x = household_income, 
                  y = mentally_unhealthy)) +
   geom_point() +
+  geom_jitter() +
   xlab("Household Income") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
@@ -91,6 +95,7 @@ p16 = ggplot(data = mental_health_train,
              aes(x = inadequate_facilities, 
                  y = mentally_unhealthy)) +
   geom_point() +
+  geom_jitter() +
   xlab("Percentage of households without kitchen or plumbing facilities") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
@@ -109,6 +114,7 @@ p17 = ggplot(data = mental_health_train,
              aes(x = perc_excessive_drinking, 
                  y = mentally_unhealthy)) +
   geom_point() +
+  geom_jitter() +
   xlab("Percentage of adults that reported excessive drinking") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
