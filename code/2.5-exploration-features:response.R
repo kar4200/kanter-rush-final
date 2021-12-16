@@ -17,7 +17,8 @@ p9 = ggplot(data = mental_health_train,
               method.args = list(family=binomial), 
               color = "red") + 
   theme_bw() +
-  labs(x = "Physically Unhealthy Days", y = "Mentally Unhealthy")
+  labs(x = "Physically Unhealthy Days", y = "Mentally Unhealthy") +
+  ggtitle("Figure 1: Physically Unhealthy Days vs. Mentally Unhealthy")
 
 ggsave(filename = "results/physically_unhealthy_days.png", 
        plot = p9, 
@@ -35,7 +36,8 @@ p11 = ggplot(data = mental_health_train,
               method.args = list(family=binomial), 
               color = "red") + 
   theme_bw() +
-  labs(x = "Percentage of adults that reported currently smoking", y = "Mentally Unhealthy")
+  labs(x = "Percentage of adults that reported currently smoking", y = "Mentally Unhealthy") +
+  ggtitle("Figure 2: Smoking vs. Mentally Unhealthy")
 
 ggsave(filename = "results/smoking.png", 
        plot = p11, 
@@ -54,7 +56,8 @@ p13 = ggplot(data = mental_health_train,
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
-  theme_bw()
+  theme_bw() +
+  ggtitle("Figure 3: MHP Providers vs. Mentally Unhealthy")
 
 ggsave(filename = "results/mhp_rate.png", 
        plot = p13, 
@@ -73,7 +76,8 @@ p14 = ggplot(data = mental_health_train,
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
-  theme_bw()
+  theme_bw() +
+  ggtitle("Figure 4: Household Income vs. Mentally Unhealthy")
 
 ggsave(filename = "results/household_income.png", 
        plot = p14, 
@@ -92,7 +96,8 @@ p16 = ggplot(data = mental_health_train,
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
-  theme_bw()
+  theme_bw() +
+  ggtitle("Figure 5: Physical Environment vs. Mentally Unhealthy")
 
 ggsave(filename = "results/inadequate_facilities.png", 
        plot = p16, 
