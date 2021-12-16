@@ -109,15 +109,13 @@ p17 = ggplot(data = mental_health_train,
              aes(x = perc_excessive_drinking, 
                  y = mentally_unhealthy)) +
   geom_point() +
-  geom_jitter()+
   xlab("Percentage of adults that reported excessive drinking") +
   ylab("Mentally Unhealthy") +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
-  theme_bw()
-
-# included geom_jitter() to better see the distribution of the data
+  theme_bw() +
+  ggtitle("Figure 6: Excessive Drinking vs. Mentally Unhealthy")
 
 ggsave(filename = "results/excessive-drinking.png", 
        plot = p17, 
