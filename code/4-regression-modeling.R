@@ -28,7 +28,7 @@ fitted_probabilities = predict(glm_fit,
                                type = "response")   
 
 # make predictions 
-predictions = as.numeric(fitted_probabilities > 0.5)
+predictions = as.numeric(fitted_probabilities > 0.3) # this halves fn rate in half but what is threshold we should go to?
 head(predictions)
 
 # evaluating the classifier 
