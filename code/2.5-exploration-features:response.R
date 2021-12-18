@@ -13,11 +13,10 @@ p9 = ggplot(data = mental_health_train,
        aes(x = physically_unhealthy_days, 
            y = mentally_unhealthy_days)) +
   geom_point() +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
+  stat_smooth(method="lm", se=FALSE, 
               color = "red") + 
   theme_bw() +
-  labs(x = "Physically Unhealthy Days", y = "Mentally Unhealthy") +
+  labs(x = "Physically Unhealthy Days", y = "Mentally Unhealthy Days") +
   ggtitle("Physically Unhealthy Days")
 
 ggsave(filename = "results/physically_unhealthy_days.png", 
@@ -30,14 +29,12 @@ ggsave(filename = "results/physically_unhealthy_days.png",
 # smoking 
 p11 = ggplot(data = mental_health_train,                
              aes(x = perc_smokers, 
-                 y = mentally_unhealthy)) +
+                 y = mentally_unhealthy_days)) +
   geom_point() +
-  geom_jitter() +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
+  stat_smooth(method="lm", se=FALSE,
               color = "red") + 
   theme_bw() +
-  labs(x = "Percentage of adults that reported currently smoking", y = "Mentally Unhealthy") +
+  labs(x = "Percentage of adults that reported currently smoking", y = "Mentally Unhealthy Days") +
   ggtitle("Smoking")
 
 ggsave(filename = "results/smoking.png", 
@@ -50,13 +47,12 @@ ggsave(filename = "results/smoking.png",
 # mhp rate  
 p13 = ggplot(data = mental_health_train,                
              aes(x = mhp_rate, 
-                 y = mentally_unhealthy)) +
+                 y = mentally_unhealthy_days)) +
   geom_point() +
   geom_jitter() +
   xlab("Mental Health Providers per 100,000 population") +
-  ylab("Mentally Unhealthy") +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
+  ylab("Mentally Unhealthy Days") +
+  stat_smooth(method="lm", se=FALSE,
               color = "red") + 
   theme_bw() +
   ggtitle("MHP Providers")
