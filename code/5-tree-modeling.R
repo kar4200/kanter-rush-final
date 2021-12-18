@@ -80,8 +80,9 @@ dev.off()
 # misclassification test 
 pred_decision_test = predict(optimal_tree, 
                         newdata = mental_health_test, type = "class")
+
 misclassification_test_decision = 
-  as_tibble(mean(pred_decision_test != mental_health_test$mentally_unhealthy)) # 9.07
+  as_tibble(mean(pred_decision_test != mental_health_test$mentally_unhealthy))
 
 write_csv(misclassification_test_decision, 
           file = "results/misclassification_test_decision.csv")
@@ -89,8 +90,9 @@ write_csv(misclassification_test_decision,
 # misclassification train 
 pred_decision_train = predict(optimal_tree, 
                         newdata = mental_health_train, type = "class")
+
 misclassification_train_decision = 
-  as_tibble(mean(pred_decision_train != mental_health_train$mentally_unhealthy)) # 9.07
+  as_tibble(mean(pred_decision_train != mental_health_train$mentally_unhealthy))
 
 write_csv(misclassification_train_decision, 
           file = "results/misclassification_train_decision.csv")
@@ -150,7 +152,7 @@ write_csv(misclassification_test_rf,
 
 # misclassification train
 pred_train_rf = predict(rf_fit_tuned, newdata = mental_health_train, type = "class")
-misclassification_train_rf = as_tibble(mean(pred_train_rf != mental_health_train$mentally_unhealthy)) # 7.38
+misclassification_train_rf = as_tibble(mean(pred_train_rf != mental_health_train$mentally_unhealthy)) 
 
 write_csv(misclassification_train_rf, 
           file = "results/misclassification_train_rf.csv")

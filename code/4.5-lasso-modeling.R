@@ -12,8 +12,8 @@ mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # run lasso regression
 set.seed(1)
-lasso_fit = cv.glmnet(mentally_unhealthy ~ . -mentally_unhealthy_days 
-                                             -physically_unhealthy_days,   
+lasso_fit = cv.glmnet(mentally_unhealthy ~. -mentally_unhealthy_days 
+                                            -physically_unhealthy_days,   
                       alpha = 1,                 
                       nfolds = 10,  
                       family = "binomial",
@@ -76,9 +76,9 @@ probabilities_train = predict(lasso_fit,
   as.numeric()
 
 # make predictions 
-predictions_test = as.numeric(probabilities_test > 0.3)
+predictions_test = as.numeric(probabilities_test > 0.5)
 
-predictions_train = as.numeric(probabilities_train > 0.3)
+predictions_train = as.numeric(probabilities_train > 0.5)
 
 
 # evaluating the classifier 

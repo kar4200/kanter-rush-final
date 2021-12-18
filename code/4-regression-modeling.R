@@ -32,10 +32,9 @@ fitted_probabilities_train = predict(glm_fit,
                                type = "response")   
 
 # make predictions 
-predictions_test = as.numeric(fitted_probabilities_test > 0.3) # this halves fn rate in half but what is threshold we should go to?
+predictions_test = as.numeric(fitted_probabilities_test > 0.5)
 
-predictions_train = as.numeric(fitted_probabilities_train > 0.3) # this halves fn rate in half but what is threshold we should go to?
-
+predictions_train = as.numeric(fitted_probabilities_train > 0.5)
 
 # evaluating the classifier 
 mental_health_test = mental_health_test %>% 
@@ -68,7 +67,7 @@ fnr = 19 / (19 + 65)
 # ROC curve
 roc_data = roc(mental_health_test %>% 
                  pull(mentally_unhealthy), 
-               fitted_probabilities) 
+               fitted_probabilities_test) 
 
 p_roc = tibble(FPR = 1-roc_data$specificities,
        TPR = roc_data$sensitivities) %>%
