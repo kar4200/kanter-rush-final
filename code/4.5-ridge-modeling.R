@@ -10,14 +10,10 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # run ridge regression
-set.seed(471)
-
-ridge_fit = cv.glmnet(mentally_unhealthy ~ . - mentally_unhealthy_days 
-                                             - physically_unhealthy_days,
+set.seed(1)
+ridge_fit = cv.glmnet(mentally_unhealthy_days ~ .- physically_unhealthy_days,
                       alpha = 0, 
                       nfolds = 10, 
-                      family = "binomial", 
-                      type.measure = "class",  
                       data = mental_health_train)
 
 plot(ridge_fit)
@@ -63,39 +59,25 @@ beta_hat_std %>%
 lambda = ridge_fit$lambda.1se
 
 # visualize the fitted coefficients as a function of lambda
-probabilities_test_ridge = predict(ridge_fit,              
+predictions_test_ridge = predict(ridge_fit,              
                         newdata = mental_health_test,  
-                        s = "lambda.1se",       
-                        type = "response") %>%   
+                        s = "lambda.1se") %>%   
   as.numeric()    
 
-probabilities_train_ridge = predict(ridge_fit,              
+predictions_train_ridge = predict(ridge_fit,              
                              newdata = mental_health_train,  
-                             s = "lambda.1se",       
-                             type = "response") %>%   
+                             s = "lambda.1se") %>%   
   as.numeric() 
 
-# make predictions 
-predictions_test_ridge = as.numeric(probabilities_test_ridge > 0.5)
-
-predicitions_train_ridge = as.numeric(probabilities_train_ridge > 0.5)
-
 # evaluating the classifier 
-mental_health_test = mental_health_test %>% 
-  mutate(predicted_mental_health = predictions_test_ridge)
+RMSE_test_ridge = sqrt(mean((predictions_test_ridge - mental_health_test$mentally_unhealthy_days)^2)) %>%
+  data.frame()
 
-mental_health_train = mental_health_train %>% 
-  mutate(predicted_mental_health = predicitions_train_ridge)
+RMSE_train_ridge = sqrt(mean((predictions_train_ridge - mental_health_train$mentally_unhealthy_days)^2)) %>%
+  data.frame()
 
-# calculate misclassification rate
-misclassification_test_ridge = mental_health_test %>% 
-  summarise(mean(mentally_unhealthy != predicted_mental_health))
+write_csv(RMSE_test_ridge, 
+          file = "results/RMSE_test_ridge.csv")
 
-misclassification_train_ridge = mental_health_train %>% 
-  summarise(mean(mentally_unhealthy != predicted_mental_health))
-
-write_csv(misclassification_test_ridge, 
-          file = "results/misclassification_test_ridge.csv")
-
-write_csv(misclassification_train_ridge, 
-          file = "results/misclassification_train_ridge.csv")
+write_csv(RMSE_train_ridge, 
+          file = "results/RMSE_train_ridge.csv")
