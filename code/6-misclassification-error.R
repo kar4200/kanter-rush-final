@@ -37,6 +37,9 @@ misclassification_test_ridge = misclassification_test_ridge %>%
 misclassification_test_lasso = misclassification_test_lasso %>% 
    rename(value = `mean(mentally_unhealthy != predicted_mental_health)`)
 
+misclassification_test_decision = misclassification_test_decision %>% 
+  rename(value = `mean(mentally_unhealthy != predicted_mental_health)`)
+
 # creating table of misclassification errors 
 Model = c("Regression", "Ridge", "Lasso", "Decision", "Random Forest")
 

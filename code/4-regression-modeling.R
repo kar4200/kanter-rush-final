@@ -36,6 +36,19 @@ predictions_test = as.numeric(fitted_probabilities_test > 0.5)
 
 predictions_train = as.numeric(fitted_probabilities_train > 0.5)
 
+# setting difference probability thresholds: 
+predictions_test_ = as.numeric(fitted_probabilities_test > 0.5)
+
+mvalues = seq.int(1, 60, by = 5)
+oob_errors = numeric(length(mvalues))
+ntree = 100
+for(idx in 1:length(mvalues)){
+  m = mvalues[idx]
+  rf_fit_test = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
+                             mtry = m, data = mental_health_train)
+  oob_errors[idx] = rf_fit_test$err.rate[,"OOB"][ntree]
+}
+
 # evaluating the classifier 
 mental_health_test = mental_health_test %>% 
   mutate(predicted_mental_health = predictions_test)
