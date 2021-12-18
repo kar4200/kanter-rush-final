@@ -88,18 +88,18 @@ ggsave(filename = "results/household_income.png",
 # physical environment 
 # inadequate facilities 
 p16 = ggplot(data = mental_health_train,                
-             aes(x = inadequate_facilities, 
+             aes(x = overcrowding, 
                  y = mentally_unhealthy_days)) +
   geom_point() +
   geom_jitter() +
-  xlab("Percentage of households without kitchen or plumbing facilities") +
+  xlab("Percentage of households with overcrowding") +
   ylab("Mentally Unhealthy Days") +
   stat_smooth(method="lm", se=FALSE, 
               color = "red") + 
   theme_bw() +
-  ggtitle("Inadequate Household Facilities")
+  ggtitle("Overcrowding")
 
-ggsave(filename = "results/inadequate_facilities.png", 
+ggsave(filename = "results/overcrowding.png", 
        plot = p16, 
        device = "png", 
        width = 5, 
