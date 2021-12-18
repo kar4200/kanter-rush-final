@@ -35,6 +35,8 @@ mental_health_fit_deep = rpart(mentally_unhealthy_days ~ . -physically_unhealthy
                                            cp = 0),
                    data = mental_health_train)
 
+printcp(mental_health_fit_deep)
+
 cp_table = printcp(mental_health_fit_deep) %>%
   as_tibble()
 
@@ -63,9 +65,10 @@ optimal_tree_info = cp_table %>%
   arrange(nsplit) %>% 
   head(1)
 
-optimal_tree_info$nsplit # 17 splits in the optimal tree
+optimal_tree_info$nsplit # 17 splits in the optimal tree - has node with 0 (weird!)
 
 # prune the optimal tree
+optimal_tree_info
 optimal_tree = prune(mental_health_fit_deep, cp = optimal_tree_info$CP)
 rpart.plot(optimal_tree)
 
@@ -148,8 +151,9 @@ plot(rf_fit_tuned)
 dev.off()
 
 # variable importance 
-var_imp = varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.4)
-# find how to save this
+png("varimp.png")
+varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.5)
+dev.off()
 
 # mean-squared error
 pred_rf_test = predict(rf_fit_tune, 

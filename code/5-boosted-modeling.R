@@ -47,7 +47,7 @@ cv_errors = bind_rows(
   tibble(ntree = 1:ntrees, cv_err = gbm_fit_3$cv.error, depth = 3),
 )
 
-cv_errors %>%
+cv_boosting = cv_errors %>%
   ggplot(aes(x = ntree, y = cv_err, colour = factor(depth))) + 
   # add horizontal dashed lines at the minima of the three curves
   geom_hline(yintercept = min(gbm_fit_1$cv.error), 
@@ -62,3 +62,39 @@ cv_errors %>%
                      values = c("red", "green", "blue", "purple")) +
   labs(x = "Number of trees", y = "CV error", colour = "Interaction depth") +
   theme_bw()
+
+ggsave(filename = "results/cv_boosting.png", 
+       plot = cv_boosting, 
+       device = "png", 
+       width = 6, 
+       height = 6)
+
+# Extracting Optimal Tree
+gbm_fit_tuned = gbm_fit_3
+save(gbm_fit_tuned, file = "results/gbm_fit_tuned.Rda")
+
+optimal_num_trees = gbm.perf(gbm_fit_3, plot.it = FALSE)
+optimal_num_trees
+
+# Relative Influence 
+summary(gbm_fit_tuned, n.trees = optimal_num_trees, plotit = FALSE) %>%
+  remove_rownames() %>%
+  top_n(10) %>% 
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE,
+        digits = 2,
+        col.names = c("Variable", "Relative influence")) %>%
+    save_kable("boosting-rel-inf.pdf")
+        
+# top three feaatures by relative influence
+png("partial1.png")
+plot(gbm_fit_tuned, i.var = "perc_smokers", n.trees = optimal_num_trees)
+dev.off()
+
+png("partial2.png")
+plot(gbm_fit_tuned, i.var = "household_income", n.trees = optimal_num_trees)
+dev.off()
+
+png("partial3.png")
+plot(gbm_fit_tuned, i.var = "perc_insufficient_sleep", n.trees = optimal_num_trees)
+dev.off()
