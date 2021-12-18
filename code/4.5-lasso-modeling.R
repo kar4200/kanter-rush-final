@@ -12,12 +12,9 @@ mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # run lasso regression
 set.seed(1)
-lasso_fit = cv.glmnet(mentally_unhealthy ~. -mentally_unhealthy_days 
-                                            -physically_unhealthy_days,   
+lasso_fit = cv.glmnet(mentally_unhealthy_days ~. -physically_unhealthy_days,   
                       alpha = 1,                 
-                      nfolds = 10,  
-                      family = "binomial",
-                      type.measure = "class",
+                      nfolds = 10,
                       data = mental_health_train)
 
 
@@ -46,8 +43,6 @@ ggsave(filename = "results/lasso-trace-plot.png",
        width = 8, 
        height = 5)
 
-# interpret: negative coefficient (fewer mentally unhappy days), positive coefficient (more mentally unhappy days)
-
 # extract features selected by lasso and their coefficients
 beta_hat_std = extract_std_coefs(lasso_fit, mental_health_train)
 
@@ -63,41 +58,25 @@ beta_hat_std %>%
 
 
 # visualize the fitted coefficients as a function of lambda
-probabilities_test_lasso = predict(lasso_fit,              
+predictions_test_lasso = predict(lasso_fit,              
                         newdata = mental_health_test,  
-                        s = "lambda.1se",       
-                        type = "response") %>%   
+                        s = "lambda.1se") %>%   
   as.numeric() 
 
-probabilities_train_lasso = predict(lasso_fit,              
+predictions_train_lasso = predict(lasso_fit,              
                              newdata = mental_health_train,  
-                             s = "lambda.1se",       
-                             type = "response") %>%   
+                             s = "lambda.1se") %>%   
   as.numeric()
 
-# make predictions 
-predictions_test_lasso = as.numeric(probabilities_test_lasso > 0.5)
+# rmse
+RMSE_test_lasso = sqrt(mean((predictions_test_lasso - mental_health_test$mentally_unhealthy_days)^2)) %>%
+  data.frame()
 
-predictions_train_lasso = as.numeric(probabilities_train_lasso > 0.5)
+RMSE_train_lasso = sqrt(mean((predictions_train_lasso - mental_health_train$mentally_unhealthy_days)^2)) %>%
+  data.frame()
 
+write_csv(RMSE_test_lasso, 
+          file = "results/RMSE_test_lasso.csv")
 
-# evaluating the classifier 
-mental_health_test = mental_health_test %>% 
-  mutate(predicted_mental_health = predictions_test_lasso)
-
-mental_health_train = mental_health_train %>% 
-  mutate(predicted_mental_health = predictions_train_lasso)
-
-# calculate misclassification rate
-misclassification_test_lasso = mental_health_test %>% 
-  summarise(mean(mentally_unhealthy != predicted_mental_health))
-
-misclassification_train_lasso = mental_health_train %>% 
-  summarise(mean(mentally_unhealthy != predicted_mental_health)) 
-
-write_csv(misclassification_test_lasso, 
-          file = "results/misclassification_test_lasso.csv")
-
-write_csv(misclassification_train_lasso, 
-          file = "results/misclassification_train_lasso.csv")
-
+write_csv(RMSE_train_lasso, 
+          file = "results/RMSE_train_lasso.csv")
