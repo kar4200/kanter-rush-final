@@ -69,14 +69,14 @@ predictions_train_lasso = predict(lasso_fit,
   as.numeric()
 
 # rmse
-RMSE_test_lasso = sqrt(mean((predictions_test_lasso - mental_health_test$mentally_unhealthy_days)^2)) %>%
+mse_test_lasso = mean((predictions_test_lasso - mental_health_test$mentally_unhealthy_days)^2) %>%
   data.frame()
 
-RMSE_train_lasso = sqrt(mean((predictions_train_lasso - mental_health_train$mentally_unhealthy_days)^2)) %>%
+mse_train_lasso = mean((predictions_train_lasso - mental_health_train$mentally_unhealthy_days)^2) %>%
   data.frame()
 
-write_csv(RMSE_test_lasso, 
-          file = "results/RMSE_test_lasso.csv")
+write_csv(mse_test_lasso, 
+          file = "results/mse_test_lasso.csv")
 
-write_csv(RMSE_train_lasso, 
-          file = "results/RMSE_train_lasso.csv")
+write_csv(mse_train_lasso, 
+          file = "results/mse_train_lasso.csv")
