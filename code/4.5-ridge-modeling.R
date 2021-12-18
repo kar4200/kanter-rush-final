@@ -63,23 +63,39 @@ beta_hat_std %>%
 lambda = ridge_fit$lambda.1se
 
 # visualize the fitted coefficients as a function of lambda
-probabilities = predict(ridge_fit,              
+probabilities_test = predict(ridge_fit,              
                         newdata = mental_health_test,  
                         s = "lambda.1se",       
                         type = "response") %>%   
-  as.numeric()                                   
+  as.numeric()    
+
+probabilities_train = predict(ridge_fit,              
+                             newdata = mental_health_train,  
+                             s = "lambda.1se",       
+                             type = "response") %>%   
+  as.numeric() 
 
 # make predictions 
-predictions = as.numeric(probabilities > 0.5)
-head(predictions)
+predictions_test = as.numeric(probabilities_test > 0.5) # class imbalance??
+
+predicitions_train = as.numeric(probabilities_train > 0.5) # class imbalance??
 
 # evaluating the classifier 
 mental_health_test = mental_health_test %>% 
-  mutate(predicted_mental_health = predictions)
+  mutate(predicted_mental_health = predictions_test)
+
+mental_health_train = mental_health_train %>% 
+  mutate(predicted_mental_health = predictions_train)
 
 # calculate misclassification rate
-misclassification_ridge = mental_health_test %>% 
+misclassification_test_ridge = mental_health_test %>% 
   summarise(mean(mentally_unhealthy != predicted_mental_health))
 
-write_csv(misclassification_ridge, file = "results/misclassification_ridge.csv")
+misclassification_train_ridge = mental_health_train %>% 
+  summarise(mean(mentally_unhealthy != predicted_mental_health))
 
+write_csv(misclassification_test_ridge, 
+          file = "results/misclassification_test_ridge.csv")
+
+write_csv(misclassification_train_ridge, 
+          file = "results/misclassification_train_ridge.csv")

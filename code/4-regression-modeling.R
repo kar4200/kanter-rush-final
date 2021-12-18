@@ -23,24 +23,39 @@ summary(glm_fit)
 coef(glm_fit)
 
 # extracting the fitted probabilities 
-fitted_probabilities = predict(glm_fit, 
+fitted_probabilities_test = predict(glm_fit, 
                                newdata = mental_health_test,
+                               type = "response") 
+
+fitted_probabilities_train = predict(glm_fit, 
+                               newdata = mental_health_train,
                                type = "response")   
 
 # make predictions 
-predictions = as.numeric(fitted_probabilities > 0.3) # this halves fn rate in half but what is threshold we should go to?
-head(predictions)
+predictions_test = as.numeric(fitted_probabilities_test > 0.3) # this halves fn rate in half but what is threshold we should go to?
+
+predictions_train = as.numeric(fitted_probabilities_train > 0.3) # this halves fn rate in half but what is threshold we should go to?
+
 
 # evaluating the classifier 
 mental_health_test = mental_health_test %>% 
-  mutate(predicted_mental_health = predictions)
+  mutate(predicted_mental_health = predictions_test)
+
+mental_health_train = mental_health_train %>% 
+  mutate(predicted_mental_health = predictions_train)
 
 # calculate misclassification rate
-misclassification_regression = mental_health_test %>% 
+misclassification_test_regression = mental_health_test %>% 
   summarise(mean(mentally_unhealthy != predicted_mental_health))
 
-write_csv(misclassification_regression, 
-          file = "results/misclassification_regression.csv")
+misclassification_train_regression = mental_health_train %>% 
+  summarise(mean(mentally_unhealthy != predicted_mental_health))
+
+write_csv(misclassification_test_regression, 
+          file = "results/misclassification_test_regression.csv")
+
+write_csv(misclassification_train_regression, 
+          file = "results/misclassification_train_regression.csv")
 
 # confusion matrix 
 mental_health_test %>% 

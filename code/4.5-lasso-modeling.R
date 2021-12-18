@@ -63,23 +63,41 @@ beta_hat_std %>%
 
 
 # visualize the fitted coefficients as a function of lambda
-probabilities = predict(lasso_fit,              
+probabilities_test = predict(lasso_fit,              
                         newdata = mental_health_test,  
                         s = "lambda.1se",       
                         type = "response") %>%   
-  as.numeric()                                   
+  as.numeric() 
+
+probabilities_train = predict(lasso_fit,              
+                             newdata = mental_health_train,  
+                             s = "lambda.1se",       
+                             type = "response") %>%   
+  as.numeric()
 
 # make predictions 
-predictions = as.numeric(probabilities > 0.3)
-head(predictions)
+predictions_test = as.numeric(probabilities_test > 0.3)
+
+predictions_train = as.numeric(probabilities_train > 0.3)
+
 
 # evaluating the classifier 
 mental_health_test = mental_health_test %>% 
-  mutate(predicted_mental_health = predictions)
+  mutate(predicted_mental_health = predictions_test)
+
+mental_health_train = mental_health_train %>% 
+  mutate(predicted_mental_health = predictions_train)
 
 # calculate misclassification rate
-misclassification_lasso = mental_health_test %>% 
+misclassification_test_lasso = mental_health_test %>% 
   summarise(mean(mentally_unhealthy != predicted_mental_health)) # lowering threshold increases misclass error
 
-write_csv(misclassification_lasso, file = "results/misclassification_lasso.csv")
+misclassification_train_lasso = mental_health_train %>% 
+  summarise(mean(mentally_unhealthy != predicted_mental_health)) 
+
+write_csv(misclassification_test_lasso, 
+          file = "results/misclassification_test_lasso.csv")
+
+write_csv(misclassification_train_lasso, 
+          file = "results/misclassification_train_lasso.csv")
 

@@ -1,0 +1,2 @@
+mean(mentally_unhealthy != predicted_mental_health)
+0.08227848101265822

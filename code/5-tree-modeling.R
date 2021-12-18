@@ -77,11 +77,23 @@ png(width = 8,
 rpart.plot(optimal_tree)
 dev.off()
 
-# misclassification
-pred_decision = predict(optimal_tree, 
+# misclassification test 
+pred_decision_test = predict(optimal_tree, 
                         newdata = mental_health_test, type = "class")
-misclassification_decision = as_tibble(mean(pred_decision != mental_health_test$mentally_unhealthy)) # 9.07
-write_csv(misclassification_decision, file = "results/misclassification_decision.csv")
+misclassification_test_decision = 
+  as_tibble(mean(pred_decision_test != mental_health_test$mentally_unhealthy)) # 9.07
+
+write_csv(misclassification_test_decision, 
+          file = "results/misclassification_test_decision.csv")
+
+# misclassification train 
+pred_decision_train = predict(optimal_tree, 
+                        newdata = mental_health_train, type = "class")
+misclassification_train_decision = 
+  as_tibble(mean(pred_decision_train != mental_health_train$mentally_unhealthy)) # 9.07
+
+write_csv(misclassification_train_decision, 
+          file = "results/misclassification_train_decision.csv")
 
 # RANDOM FORESTS
 set.seed(1)
@@ -129,8 +141,17 @@ save(rf_fit_tuned, file = "results/rf_fit_tuned.Rda")
 var_imp = varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.5)
 # find how to save this
 
-# misclassification error
-pred_rf = predict(rf_fit_tuned, newdata = mental_health_test, type = "class")
+# misclassification test
+pred_test_rf = predict(rf_fit_tuned, newdata = mental_health_test, type = "class")
+misclassification_test_rf = as_tibble(mean(pred_test_rf != mental_health_test$mentally_unhealthy)) # 7.38
 
-misclassification_rf = as_tibble(mean(pred_rf != mental_health_test$mentally_unhealthy)) # 7.38
-write_csv(misclassification_rf, file = "results/misclassification_rf.csv")
+write_csv(misclassification_test_rf, 
+          file = "results/misclassification_test_rf.csv")
+
+# misclassification train
+pred_train_rf = predict(rf_fit_tuned, newdata = mental_health_train, type = "class")
+misclassification_train_rf = as_tibble(mean(pred_train_rf != mental_health_train$mentally_unhealthy)) # 7.38
+
+write_csv(misclassification_train_rf, 
+          file = "results/misclassification_train_rf.csv")
+
