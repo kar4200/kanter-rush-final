@@ -29,23 +29,21 @@ plot(lm_fit$residuals)
 # add to appendix - but everything is good 
 
 # extracting the fitted probabilities 
-fitted_probabilities_test = predict(lm_fit, 
-                               newdata = mental_health_test,
-                               type = "response") 
+predictions_test_lm = predict(lm_fit, 
+                               newdata = mental_health_test) 
 
-fitted_probabilities_train = predict(lm_fit, 
-                               newdata = mental_health_train,
-                               type = "response")   
+predictions_train_lm = predict(lm_fit, 
+                               newdata = mental_health_train)   
 
 # evaluating the classifier - calculate rmse for train and test
-RMSE_test_lm = sqrt(mean((fitted_probabilities_test - mental_health_test$mentally_unhealthy_days)^2)) %>%
+mse_test_lm = mean((predictions_test_lm - mental_health_test$mentally_unhealthy_days)^2) %>%
   data.frame()
 
-RMSE_train_lm = sqrt(mean((fitted_probabilities_train - mental_health_train$mentally_unhealthy_days)^2)) %>%
+mse_train_lm = mean((predictions_train_lm - mental_health_train$mentally_unhealthy_days)^2) %>%
   data.frame()
 
-write_csv(RMSE_test_lm, 
-          file = "results/rmse_test_lm.csv")
+write_csv(mse_test_lm, 
+          file = "results/mse_test_lm.csv")
 
-write_csv(RMSE_train_lm, 
-          file = "results/rmse_train.lm.csv")
+write_csv(mse_train_lm, 
+          file = "results/mse_train.lm.csv")
