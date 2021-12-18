@@ -13,7 +13,7 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # fit classification tree based on Gini Index with default "control" parameters
-set.seed(1)
+set.seed(400)
 mental_health_fit = rpart(mentally_unhealthy ~ . -mentally_unhealthy_days 
                                                  -physically_unhealthy_days,
                  method = "class",
@@ -23,7 +23,7 @@ mental_health_fit = rpart(mentally_unhealthy ~ . -mentally_unhealthy_days
 rpart.plot(mental_health_fit)
 
 # find deepest possible tree (to begin to find optimal tree)
-set.seed(1)
+set.seed(400)
 mental_health_fit_deep = rpart(mentally_unhealthy ~ . -mentally_unhealthy_days 
                                                       -physically_unhealthy_days,
                    method = "class",
@@ -55,13 +55,13 @@ ggsave(filename = "results/cp-cv-chart.png",
        height = 6)
 
 # find optimal tree
-set.seed(1)
+set.seed(400)
 optimal_tree_info = cp_table %>% 
   filter(xerror - xstd < min(xerror)) %>% 
   arrange(nsplit) %>% 
   head(1)
 
-optimal_tree_info$nsplit # 7 splits in the optimal tree
+optimal_tree_info$nsplit # 8 splits in the optimal tree
 
 # prune the optimal tree
 optimal_tree = prune(mental_health_fit_deep, cp = optimal_tree_info$CP)
@@ -81,8 +81,11 @@ dev.off()
 pred_decision_test = predict(optimal_tree, 
                         newdata = mental_health_test, type = "class")
 
-misclassification_test_decision = 
-  as_tibble(mean(pred_decision_test != mental_health_test$mentally_unhealthy))
+mental_health_test = mental_health_test %>% 
+  mutate(predicted_mental_health = pred_decision_test)
+
+misclassification_test_decision = mental_health_test %>% 
+  summarise(mean(mentally_unhealthy != predicted_mental_health))
 
 write_csv(misclassification_test_decision, 
           file = "results/misclassification_test_decision.csv")
@@ -91,20 +94,23 @@ write_csv(misclassification_test_decision,
 pred_decision_train = predict(optimal_tree, 
                         newdata = mental_health_train, type = "class")
 
-misclassification_train_decision = 
-  as_tibble(mean(pred_decision_train != mental_health_train$mentally_unhealthy))
+mental_health_train = mental_health_train %>% 
+  mutate(predicted_mental_health = pred_decision_train)
+
+misclassification_train_decision = mental_health_train %>% 
+  summarise(mean(mentally_unhealthy != predicted_mental_health))
 
 write_csv(misclassification_train_decision, 
           file = "results/misclassification_train_decision.csv")
 
 # RANDOM FORESTS
-set.seed(1)
+set.seed(10)
 rf_fit = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days,
                       data = mental_health_train)
 rf_fit$mtry
 
 # tune random forests
-set.seed(1)
+set.seed(10)
 mvalues = seq.int(1, 60, by = 5)
 oob_errors = numeric(length(mvalues))
 ntree = 100
@@ -130,9 +136,9 @@ plot(rf_cv)
 dev.off()
 
 # tune random forest
-set.seed(1)
+set.seed(10)
 rf_fit_tuned = randomForest(factor(mentally_unhealthy) ~ . -mentally_unhealthy_days -physically_unhealthy_days, 
-                            mtry = 21, 
+                            mtry = 46, 
                             ntree = 500, 
                             importance = TRUE,
                             data = mental_health_train)
@@ -145,13 +151,16 @@ var_imp = varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.5)
 
 # misclassification test
 pred_test_rf = predict(rf_fit_tuned, newdata = mental_health_test, type = "class")
-misclassification_test_rf = as_tibble(mean(pred_test_rf != mental_health_test$mentally_unhealthy)) # 7.38
+
+misclassification_test_rf = as_tibble(mean(pred_test_rf != mental_health_test$mentally_unhealthy))
 
 write_csv(misclassification_test_rf, 
           file = "results/misclassification_test_rf.csv")
 
 # misclassification train
 pred_train_rf = predict(rf_fit_tuned, newdata = mental_health_train, type = "class")
+
+
 misclassification_train_rf = as_tibble(mean(pred_train_rf != mental_health_train$mentally_unhealthy)) 
 
 write_csv(misclassification_train_rf, 

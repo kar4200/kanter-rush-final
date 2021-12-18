@@ -1,2 +1,2 @@
-value
-0.08438818565400844
+mean(mentally_unhealthy != predicted_mental_health)
+0.0759493670886076
