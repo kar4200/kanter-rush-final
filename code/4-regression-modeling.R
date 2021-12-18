@@ -1,8 +1,5 @@
 # load libraries
 library(tidyverse)
-library(glmnetUtils)                             
-library(pROC)   
-source("code/functions/plot_glmnet.R")       
 
 # change 
 # read in the training data
