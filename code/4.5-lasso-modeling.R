@@ -70,10 +70,10 @@ predictions_train_lasso = predict(lasso_fit,
 
 # rmse
 mse_test_lasso = mean((predictions_test_lasso - mental_health_test$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 mse_train_lasso = mean((predictions_train_lasso - mental_health_train$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 write_csv(mse_test_lasso, 
           file = "results/mse_test_lasso.csv")

@@ -87,10 +87,10 @@ pred_decision_train = predict(optimal_tree,
                               newdata = mental_health_train)
 
 mse_decision_test = mean((pred_decision_test - mental_health_test$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 mse_decision_train = mean((pred_decision_train - mental_health_train$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 write_csv(mse_decision_test, 
           file = "results/mse_decision_test.csv")
@@ -159,10 +159,10 @@ pred_rf_train = predict(rf_fit_tuned,
                               newdata = mental_health_train)
 
 mse_rf_test = mean((pred_rf_test - mental_health_test$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 mse_rf_train = mean((pred_rf_train - mental_health_train$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 write_csv(mse_rf_test, 
           file = "results/mse_rf_test.csv")

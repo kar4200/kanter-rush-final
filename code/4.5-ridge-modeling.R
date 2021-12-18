@@ -71,10 +71,10 @@ predictions_train_ridge = predict(ridge_fit,
 
 # evaluating the classifier 
 mse_test_ridge = mean((predictions_test_ridge - mental_health_test$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 mse_train_ridge = mean((predictions_train_ridge - mental_health_train$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 write_csv(mse_test_ridge, 
           file = "results/mse_test_ridge.csv")

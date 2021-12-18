@@ -37,10 +37,10 @@ predictions_train_lm = predict(lm_fit,
 
 # evaluating the classifier - calculate rmse for train and test
 mse_test_lm = mean((predictions_test_lm - mental_health_test$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 mse_train_lm = mean((predictions_train_lm - mental_health_train$mentally_unhealthy_days)^2) %>%
-  data.frame()
+  as_tibble()
 
 write_csv(mse_test_lm, 
           file = "results/mse_test_lm.csv")
