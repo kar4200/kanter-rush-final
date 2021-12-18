@@ -151,8 +151,8 @@ plot(rf_fit_tuned)
 dev.off()
 
 # variable importance 
-png("varimp.png")
-varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.5)
+png("varimp2.png")
+varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8)
 dev.off()
 
 # mean-squared error
