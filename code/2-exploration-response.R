@@ -159,8 +159,3 @@ mental_health_clean %>%
         booktabs = TRUE, 
         col.names = c("State", "County", "Mentally Unhealthy Days")) %>%
   save_kable("high-days.pdf")
-
-# need to figure out how to save table #s differently (both Table 1 right now)
-
-# pick features and explore relationship with mentally_unhealthy response
-

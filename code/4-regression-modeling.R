@@ -1,7 +1,6 @@
 # load libraries
 library(tidyverse)
 
-# change 
 # read in the training data
 mental_health_train = read_csv("data/clean/mental_health_train.csv")
 
@@ -33,10 +32,12 @@ predictions_train_lm = predict(lm_fit,
                                newdata = mental_health_train)   
 
 # evaluating the classifier - calculate rmse for train and test
-mse_test_lm = mean((predictions_test_lm - mental_health_test$mentally_unhealthy_days)^2) %>%
+mse_test_lm = mean((predictions_test_lm - 
+                      mental_health_test$mentally_unhealthy_days)^2) %>%
   as_tibble()
 
-mse_train_lm = mean((predictions_train_lm - mental_health_train$mentally_unhealthy_days)^2) %>%
+mse_train_lm = mean((predictions_train_lm - 
+                       mental_health_train$mentally_unhealthy_days)^2) %>%
   as_tibble()
 
 write_csv(mse_test_lm, 

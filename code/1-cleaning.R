@@ -11,7 +11,8 @@ demographic_data_clean = demographic_data %>%
 names(demographic_data_clean) = gsub(pattern = "_2019", replacement = "", 
                                   x = names(demographic_data_clean))
 
-write_csv(demographic_data_clean, file = "data/clean/demographic_data_clean.csv")
+write_csv(demographic_data_clean, 
+          file = "data/clean/demographic_data_clean.csv")
 
 # clean health data
 health_data_clean = health_data %>%
@@ -97,10 +98,6 @@ mental_health_clean %>%
 min(mental_health_clean$mentally_unhealthy_days) # 2.5
 max(mental_health_clean$mentally_unhealthy_days) # 6
 sd(mental_health_clean$mentally_unhealthy_days) # 0.58
-
-# set threshold for mentally unhealthy (yes vs. no) at 4.5 (1 standard deviation above the mean)
-mental_health_clean = mental_health_clean %>%  
-  mutate(mentally_unhealthy = ifelse(mentally_unhealthy_days >= 4.5, 1, 0))
 
 # write cleaned data to file
 write_csv(mental_health_clean, file = "data/clean/mental_health_clean.csv")

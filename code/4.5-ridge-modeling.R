@@ -34,7 +34,9 @@ plot(ridge_fit)
 dev.off()
 
 # create lasso trace plot
-p_ridge = plot_glmnet(ridge_fit, mental_health_train, features_to_plot = 10, lambda = ridge_fit$lambda.1se)
+p_ridge = plot_glmnet(ridge_fit, mental_health_train, 
+                      features_to_plot = 10, lambda = ridge_fit$lambda.1se)
+
 ggsave(filename = "results/ridge-trace-plot.png", 
        plot = p_ridge, 
        device = "png", 
@@ -70,7 +72,8 @@ predictions_train_ridge = predict(ridge_fit,
   as.numeric() 
 
 # evaluating the classifier 
-mse_test_ridge = mean((predictions_test_ridge - mental_health_test$mentally_unhealthy_days)^2) %>%
+mse_test_ridge = mean((predictions_test_ridge - 
+                         mental_health_test$mentally_unhealthy_days)^2) %>%
   as_tibble()
 
 mse_train_ridge = mean((predictions_train_ridge - mental_health_train$mentally_unhealthy_days)^2) %>%
