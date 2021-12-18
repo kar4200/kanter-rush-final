@@ -10,7 +10,7 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
 # run ridge regression
-set.seed(1)
+set.seed(471)
 
 ridge_fit = cv.glmnet(mentally_unhealthy ~ . - mentally_unhealthy_days 
                                              - physically_unhealthy_days,
@@ -63,29 +63,29 @@ beta_hat_std %>%
 lambda = ridge_fit$lambda.1se
 
 # visualize the fitted coefficients as a function of lambda
-probabilities_test = predict(ridge_fit,              
+probabilities_test_ridge = predict(ridge_fit,              
                         newdata = mental_health_test,  
                         s = "lambda.1se",       
                         type = "response") %>%   
   as.numeric()    
 
-probabilities_train = predict(ridge_fit,              
+probabilities_train_ridge = predict(ridge_fit,              
                              newdata = mental_health_train,  
                              s = "lambda.1se",       
                              type = "response") %>%   
   as.numeric() 
 
 # make predictions 
-predictions_test = as.numeric(probabilities_test > 0.5) # class imbalance??
+predictions_test_ridge = as.numeric(probabilities_test_ridge > 0.5)
 
-predicitions_train = as.numeric(probabilities_train > 0.5) # class imbalance??
+predicitions_train_ridge = as.numeric(probabilities_train_ridge > 0.5)
 
 # evaluating the classifier 
 mental_health_test = mental_health_test %>% 
-  mutate(predicted_mental_health = predictions_test)
+  mutate(predicted_mental_health = predictions_test_ridge)
 
 mental_health_train = mental_health_train %>% 
-  mutate(predicted_mental_health = predictions_train)
+  mutate(predicted_mental_health = predicitions_train_ridge)
 
 # calculate misclassification rate
 misclassification_test_ridge = mental_health_test %>% 
