@@ -11,9 +11,8 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 # physically unhealthy days
 p9 = ggplot(data = mental_health_train,                
        aes(x = physically_unhealthy_days, 
-           y = mentally_unhealthy)) +
+           y = mentally_unhealthy_days)) +
   geom_point() +
-  geom_jitter() +
   stat_smooth(method="glm", se=FALSE, 
               method.args = list(family=binomial), 
               color = "red") + 
