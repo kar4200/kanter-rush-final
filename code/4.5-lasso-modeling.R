@@ -63,34 +63,34 @@ beta_hat_std %>%
 
 
 # visualize the fitted coefficients as a function of lambda
-probabilities_test = predict(lasso_fit,              
+probabilities_test_lasso = predict(lasso_fit,              
                         newdata = mental_health_test,  
                         s = "lambda.1se",       
                         type = "response") %>%   
   as.numeric() 
 
-probabilities_train = predict(lasso_fit,              
+probabilities_train_lasso = predict(lasso_fit,              
                              newdata = mental_health_train,  
                              s = "lambda.1se",       
                              type = "response") %>%   
   as.numeric()
 
 # make predictions 
-predictions_test = as.numeric(probabilities_test > 0.5)
+predictions_test_lasso = as.numeric(probabilities_test_lasso > 0.5)
 
-predictions_train = as.numeric(probabilities_train > 0.5)
+predictions_train_lasso = as.numeric(probabilities_train_lasso > 0.5)
 
 
 # evaluating the classifier 
 mental_health_test = mental_health_test %>% 
-  mutate(predicted_mental_health = predictions_test)
+  mutate(predicted_mental_health = predictions_test_lasso)
 
 mental_health_train = mental_health_train %>% 
-  mutate(predicted_mental_health = predictions_train)
+  mutate(predicted_mental_health = predictions_train_lasso)
 
 # calculate misclassification rate
 misclassification_test_lasso = mental_health_test %>% 
-  summarise(mean(mentally_unhealthy != predicted_mental_health)) # lowering threshold increases misclass error
+  summarise(mean(mentally_unhealthy != predicted_mental_health))
 
 misclassification_train_lasso = mental_health_train %>% 
   summarise(mean(mentally_unhealthy != predicted_mental_health)) 
