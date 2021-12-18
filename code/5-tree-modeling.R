@@ -22,6 +22,14 @@ mental_health_fit = rpart(mentally_unhealthy ~ . -mentally_unhealthy_days
 
 rpart.plot(mental_health_fit)
 
+png(width = 8, 
+    height = 8,
+    res = 300,
+    units = "in", 
+    filename = "results/default-tree.png")
+rpart.plot(mental_health_fit)
+dev.off()
+
 # find deepest possible tree (to begin to find optimal tree)
 set.seed(400)
 mental_health_fit_deep = rpart(mentally_unhealthy ~ . -mentally_unhealthy_days 
@@ -65,7 +73,7 @@ optimal_tree_info$nsplit # 8 splits in the optimal tree
 
 # prune the optimal tree
 optimal_tree = prune(mental_health_fit_deep, cp = optimal_tree_info$CP)
-classification = rpart.plot(optimal_tree)
+rpart.plot(optimal_tree)
 
 save(optimal_tree, file = "results/optimal_tree.Rda")
 
@@ -90,11 +98,7 @@ write_csv(misclassification_test_decision,
 pred_decision_train = predict(optimal_tree, 
                         newdata = mental_health_train, type = "class")
 
-mental_health_train = mental_health_train %>% 
-  mutate(predicted_mental_health = pred_decision_train)
-
-misclassification_train_decision = mental_health_train %>% 
-  summarise(mean(mentally_unhealthy != predicted_mental_health))
+misclassification_train_decision = as_tibble(mean(pred_decision_train != mental_health_train$mentally_unhealthy)) 
 
 write_csv(misclassification_train_decision, 
           file = "results/misclassification_train_decision.csv")
