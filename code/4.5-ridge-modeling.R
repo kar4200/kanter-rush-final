@@ -70,14 +70,14 @@ predictions_train_ridge = predict(ridge_fit,
   as.numeric() 
 
 # evaluating the classifier 
-RMSE_test_ridge = sqrt(mean((predictions_test_ridge - mental_health_test$mentally_unhealthy_days)^2)) %>%
+mse_test_ridge = mean((predictions_test_ridge - mental_health_test$mentally_unhealthy_days)^2) %>%
   data.frame()
 
-RMSE_train_ridge = sqrt(mean((predictions_train_ridge - mental_health_train$mentally_unhealthy_days)^2)) %>%
+mse_train_ridge = mean((predictions_train_ridge - mental_health_train$mentally_unhealthy_days)^2) %>%
   data.frame()
 
-write_csv(RMSE_test_ridge, 
-          file = "results/RMSE_test_ridge.csv")
+write_csv(mse_test_ridge, 
+          file = "results/mse_test_ridge.csv")
 
-write_csv(RMSE_train_ridge, 
-          file = "results/RMSE_train_ridge.csv")
+write_csv(mse_train_ridge, 
+          file = "results/mse_train_ridge.csv")
