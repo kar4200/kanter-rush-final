@@ -67,7 +67,7 @@ ggsave(filename = "results/cv_boosting.png",
        plot = cv_boosting, 
        device = "png", 
        width = 6, 
-       height = 6)
+       height = 4)
 
 # Extracting Optimal Tree
 gbm_fit_tuned = gbm_fit_3
