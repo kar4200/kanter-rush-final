@@ -43,20 +43,26 @@ mse_test =
                                 mse_test_rf)))
 
  
-mse_train = 
-  as_tibble(cbind(Model, rbind(mse_train_lm, 
-                                mse_train_lasso, 
-                                mse_train_lasso, 
-                                mse_train_decision, 
-                                mse_train_rf)))
+mse_train = cbind(mse_train_lm, 
+                  mse_train_lasso, 
+                  mse_train_lasso, 
+                  mse_train_decision, 
+                  mse_train_rf)
 
-mse = lmerge(mse_test, mse_train, by = "Model") 
+colnames(mse_train) = Model
 
-colnames(misclassification) = c("Model", "Train Error", "Test Error")
+mse_train = mse_train %>% 
+  pivot_longer(1:5, 
+               names_to = "Model", 
+               values_to = "number")
 
-misclassification %>% 
+mse = inner_join(mse_test, mse_train) 
+
+colnames(mse) = c("Model", "Test Error", "Train Error")
+
+mse %>% 
   kable(format = "latex",
         booktabs = TRUE, 
         digits = 4) %>%
-  save_kable("misclassification-error.pdf")
+  save_kable("mse-all-models.pdf")
  
