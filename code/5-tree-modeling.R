@@ -81,11 +81,7 @@ dev.off()
 pred_decision_test = predict(optimal_tree, 
                         newdata = mental_health_test, type = "class")
 
-mental_health_test = mental_health_test %>% 
-  mutate(predicted_mental_health = pred_decision_test)
-
-misclassification_test_decision = mental_health_test %>% 
-  summarise(mean(mentally_unhealthy != predicted_mental_health))
+misclassification_test_decision = as_tibble(mean(pred_decision_test != mental_health_test$mentally_unhealthy)) 
 
 write_csv(misclassification_test_decision, 
           file = "results/misclassification_test_decision.csv")
