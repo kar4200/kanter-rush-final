@@ -40,7 +40,7 @@ p_lasso = plot_glmnet(lasso_fit, mental_health_train, features_to_plot = 8)
 ggsave(filename = "results/lasso-trace-plot.png", 
        plot = p_lasso, 
        device = "png", 
-       width = 8, 
+       width = 10, 
        height = 5)
 
 # extract features selected by lasso and their coefficients
