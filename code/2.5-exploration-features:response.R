@@ -10,9 +10,10 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 # health outcomes 
 # physically unhealthy days
 p9 = ggplot(data = mental_health_train,                
-       aes(x = physically_unhealthy_days, 
-           y = mentally_unhealthy_days)) +
+            aes(x = physically_unhealthy_days, 
+                y = mentally_unhealthy_days)) +
   geom_point() +
+  geom_jitter() +
   stat_smooth(method="lm", se=FALSE, 
               color = "red") + 
   theme_bw() +
@@ -31,6 +32,7 @@ p11 = ggplot(data = mental_health_train,
              aes(x = perc_smokers, 
                  y = mentally_unhealthy_days)) +
   geom_point() +
+  geom_jitter() +
   stat_smooth(method="lm", se=FALSE,
               color = "red") + 
   theme_bw() +
@@ -67,13 +69,12 @@ ggsave(filename = "results/mhp_rate.png",
 # household income 
 p14 = ggplot(data = mental_health_train,                
              aes(x = household_income, 
-                 y = mentally_unhealthy)) +
+                 y = mentally_unhealthy_days)) +
   geom_point() +
   geom_jitter() +
   xlab("Household Income") +
-  ylab("Mentally Unhealthy") +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
+  ylab("Mentally Unhealthy Days") +
+  stat_smooth(method="glm", se=FALSE,
               color = "red") + 
   theme_bw() +
   ggtitle("Household Income")
@@ -88,13 +89,12 @@ ggsave(filename = "results/household_income.png",
 # inadequate facilities 
 p16 = ggplot(data = mental_health_train,                
              aes(x = inadequate_facilities, 
-                 y = mentally_unhealthy)) +
+                 y = mentally_unhealthy_days)) +
   geom_point() +
   geom_jitter() +
   xlab("Percentage of households without kitchen or plumbing facilities") +
-  ylab("Mentally Unhealthy") +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
+  ylab("Mentally Unhealthy Days") +
+  stat_smooth(method="lm", se=FALSE, 
               color = "red") + 
   theme_bw() +
   ggtitle("Inadequate Household Facilities")
@@ -107,13 +107,12 @@ ggsave(filename = "results/inadequate_facilities.png",
 
 p17 = ggplot(data = mental_health_train,                
              aes(x = perc_excessive_drinking, 
-                 y = mentally_unhealthy)) +
+                 y = mentally_unhealthy_days)) +
   geom_point() +
   geom_jitter() +
   xlab("Percentage of adults that reported excessive drinking") +
-  ylab("Mentally Unhealthy") +
-  stat_smooth(method="glm", se=FALSE, 
-              method.args = list(family=binomial), 
+  ylab("Mentally Unhealthy Days") +
+  stat_smooth(method="lm", se=FALSE,
               color = "red") + 
   theme_bw() +
   ggtitle("Excessive Drinking")
@@ -123,4 +122,3 @@ ggsave(filename = "results/excessive-drinking.png",
        device = "png", 
        width = 5, 
        height = 5)
-
