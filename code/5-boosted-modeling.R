@@ -89,18 +89,18 @@ summary(gbm_fit_tuned, n.trees = optimal_num_trees, plotit = FALSE) %>%
 # top three feaatures by relative influence
 png("partial1.png")
 plot(gbm_fit_tuned, i.var = "perc_smokers", n.trees = optimal_num_trees,
-     ylab = "Mentally Unhealthy Days",
-     xlab = "Percent Smokers")
+     xlab = "Percent Smokers",
+     main = "Partial Dependence Plot: Smoking")
 dev.off()
 
 png("partial2.png")
 plot(gbm_fit_tuned, i.var = "household_income", n.trees = optimal_num_trees,
-     ylab = "Mentally Unhealthy Days",
-     xlab = "Household Income")
+     xlab = "Household Income",
+     main = "Partial Dependence Plot: Household Income")
 dev.off()
 
 png("partial3.png")
 plot(gbm_fit_tuned, i.var = "perc_insufficient_sleep", n.trees = optimal_num_trees,
-     ylab = "Mentally Unhealthy Days",
-     xlab = "Percent Insufficient Sleep")
+     xlab = "Percent Insufficient Sleep",
+     main = "Partial Dependence Plot: Insufficient Sleep")
 dev.off()
