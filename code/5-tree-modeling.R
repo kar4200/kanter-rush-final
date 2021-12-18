@@ -12,7 +12,7 @@ mental_health_train = read_csv("data/clean/mental_health_train.csv")
 # read in the testing data
 mental_health_test = read_csv("data/clean/mental_health_test.csv")
 
-# fit classification tree based on Gini Index with default "control" parameters
+# fit decision tree
 set.seed(1)
 mental_health_fit = rpart(mentally_unhealthy_days ~ . -physically_unhealthy_days,
                  data = mental_health_train)
@@ -71,11 +71,11 @@ rpart.plot(optimal_tree)
 
 save(optimal_tree, file = "results/optimal_tree.Rda")
 
-png(width = 8, 
+png(width = 11, 
     height = 8,
     res = 300,
     units = "in", 
-    filename = "results/classification-tree.png")
+    filename = "results/decision-tree.png")
 rpart.plot(optimal_tree)
 dev.off()
 
@@ -98,7 +98,7 @@ write_csv(mse_decision_test,
 write_csv(mse_decision_train, 
           file = "results/mse_decision_train.csv")
 
-# RANDOM FORESTS
+# Random Forests
 set.seed(1)
 rf_fit = randomForest(mentally_unhealthy_days ~ . -physically_unhealthy_days,
                       data = mental_health_train)
@@ -152,10 +152,10 @@ var_imp = varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.4)
 # find how to save this
 
 # mean-squared error
-pred_rf_test = predict(rf_fit_tuned, 
+pred_rf_test = predict(rf_fit_tune, 
                              newdata = mental_health_test)
 
-pred_rf_train = predict(rf_fit_tuned,
+pred_rf_train = predict(rf_fit_tune,
                               newdata = mental_health_train)
 
 mse_rf_test = mean((pred_rf_test - mental_health_test$mentally_unhealthy_days)^2) %>%
