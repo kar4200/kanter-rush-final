@@ -103,6 +103,3 @@ tibble(Method = c("OLS", "Ridge", "Lasso", "Decision Tree", "Random Forest", "Bo
         digits = 4,
         col.names = c("Model", "Train MSE", "Test MSE")) %>%
   save_kable("mse-all-models.pdf")
-
-# %>%
-  write_tsv("results/model-evaluation.tsv")
