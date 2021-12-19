@@ -17,7 +17,8 @@ p9 = ggplot(data = mental_health_train,
   stat_smooth(method="lm", se=FALSE, 
               color = "red") + 
   theme_bw() +
-  labs(x = "Physically Unhealthy Days", y = "Mentally Unhealthy Days") +
+  labs(x = "Physically Unhealthy Days", 
+       y = "Mentally Unhealthy Days") +
   ggtitle("Physically Unhealthy Days")
 
 ggsave(filename = "results/physically_unhealthy_days.png", 
@@ -36,7 +37,8 @@ p11 = ggplot(data = mental_health_train,
   stat_smooth(method="lm", se=FALSE,
               color = "red") + 
   theme_bw() +
-  labs(x = "Percentage of adults that reported currently smoking", y = "Mentally Unhealthy Days") +
+  labs(x = "Percentage of adults that reported currently smoking", 
+       y = "Mentally Unhealthy Days") +
   ggtitle("Smoking")
 
 ggsave(filename = "results/smoking.png", 
@@ -105,6 +107,7 @@ ggsave(filename = "results/overcrowding.png",
        width = 5, 
        height = 5)
 
+# excessive drinking: to observe data
 p17 = ggplot(data = mental_health_train,                
              aes(x = perc_excessive_drinking, 
                  y = mentally_unhealthy_days)) +
