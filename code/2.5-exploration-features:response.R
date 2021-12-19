@@ -125,3 +125,23 @@ ggsave(filename = "results/excessive-drinking.png",
        device = "png", 
        width = 5, 
        height = 5)
+
+# demographic information
+# percent female
+p18 = ggplot(data = mental_health_train,                
+             aes(x = perc_female, 
+                 y = mentally_unhealthy_days)) +
+  geom_point() +
+  geom_jitter() +
+  xlab("Percentage Female Population") +
+  ylab("Mentally Unhealthy Days") +
+  stat_smooth(method="lm", se=FALSE,
+              color = "red") + 
+  theme_bw() +
+  ggtitle("Percentage Female")
+
+ggsave(filename = "results/female.png", 
+       plot = p18, 
+       device = "png", 
+       width = 5, 
+       height = 5)
