@@ -58,11 +58,12 @@ cv_boosting = cv_errors %>%
              linetype = "dashed", color = "blue") +
   geom_line() + 
   # set colors to match horizontal line minima
-  scale_color_manual(labels = c("1", "2", "3", "4"), 
-                     values = c("red", "green", "blue", "purple")) +
+  scale_color_manual(labels = c("1", "2", "3"), 
+                     values = c("red", "green", "blue")) +
   labs(x = "Number of trees", y = "CV error", colour = "Interaction depth") +
   theme_bw()
 
+# save cv error plot (optimal = gbm_fit_3)
 ggsave(filename = "results/cv_boosting.png", 
        plot = cv_boosting, 
        device = "png", 
@@ -74,9 +75,9 @@ gbm_fit_tuned = gbm_fit_3
 save(gbm_fit_tuned, file = "results/gbm_fit_tuned.Rda")
 
 optimal_num_trees = gbm.perf(gbm_fit_3, plot.it = FALSE)
-optimal_num_trees
+optimal_num_trees # 992 
 
-# Relative Influence 
+# Relative Influence (save table of top 10 features)
 summary(gbm_fit_tuned, n.trees = optimal_num_trees, plotit = FALSE) %>%
   remove_rownames() %>%
   top_n(10) %>% 
@@ -86,39 +87,17 @@ summary(gbm_fit_tuned, n.trees = optimal_num_trees, plotit = FALSE) %>%
         col.names = c("Variable", "Relative influence")) %>%
     save_kable("boosting-rel-inf.pdf")
         
-# top three feaatures by relative influence
+# plot top two feaatures by relative influence
+# percent smokers
 png("partial1.png", width=5, height=4, res=300, units = "in")
 plot(gbm_fit_tuned, i.var = "perc_smokers", n.trees = optimal_num_trees,
      xlab = "Percent Smokers",
      main = "Partial Dependence Plot: Smoking")
 dev.off()
 
+# household income
 png("partial2.png", width=5, height=4, res=300, units = "in")
 plot(gbm_fit_tuned, i.var = "household_income", n.trees = optimal_num_trees,
      xlab = "Household Income",
      main = "Partial Dependence Plot: Household Income")
 dev.off()
-
-# mean squared error - test 
-predictions_test_gbm = predict(gbm_fit_tuned, 
-                          n.trees = optimal_num_trees,
-                          newdata = mental_health_test)
-
-mse_gbm_test = mean((predictions_test_gbm - 
-                       mental_health_test$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-write_csv(mse_gbm_test, 
-          file = "results/mse_gbm_test.csv")
-
-# mean squared error - train
-predictions_train_gbm = predict(gbm_fit_tuned, 
-                               n.trees = optimal_num_trees,
-                               newdata = mental_health_train)
-
-mse_gbm_train = mean((predictions_train_gbm - 
-                       mental_health_train$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-write_csv(mse_gbm_train, 
-          file = "results/mse_gbm_train.csv")
