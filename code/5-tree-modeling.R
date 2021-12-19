@@ -151,8 +151,9 @@ plot(rf_fit_tuned)
 dev.off()
 
 # variable importance 
-png("varimp.png", width=8, height=8, res=300, units = "in")
-varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8) 
+png("varimp.png", width=8, height=4, res=300, units = "in")
+varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8,
+           main = "Random Forest Importance") 
 dev.off()
 
 # mean-squared error
