@@ -52,7 +52,7 @@ p2 = map_data("county") %>%
                color="black", fill=NA,  size = 1, alpha = .3) + 
   geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
-  scale_fill_gradient(low = "blue", high = "red") +
+  scale_fill_gradient(low = "#7a9f79", high = "#FFFFFF") +
   theme_void() +
   ggtitle("Heat Map - Cleaned Dataset")
 
