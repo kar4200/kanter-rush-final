@@ -60,7 +60,7 @@ cv_boosting = cv_errors %>%
   # set colors to match horizontal line minima
   scale_color_manual(labels = c("1", "2", "3"), 
                      values = c("red", "green", "blue")) +
-  labs(x = "Number of trees", y = "CV error", colour = "Interaction depth") +
+  labs(x = "Number of Trees", y = "CV Error", colour = "Interaction Depth") +
   theme_bw()
 
 # save cv error plot (optimal = gbm_fit_3)
