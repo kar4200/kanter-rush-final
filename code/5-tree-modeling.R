@@ -19,6 +19,7 @@ mental_health_fit = rpart(mentally_unhealthy_days ~ . -physically_unhealthy_days
 
 rpart.plot(mental_health_fit)
 
+# save default tree
 png(width = 8, 
     height = 8,
     res = 300,
@@ -27,7 +28,7 @@ png(width = 8,
 rpart.plot(mental_health_fit)
 dev.off()
 
-# find deepest possible tree (to begin to find optimal tree)
+# find deepest possible tree (to use for pruning to find optimal tree)
 set.seed(1)
 mental_health_fit_deep = rpart(mentally_unhealthy_days ~ . -physically_unhealthy_days,
                    control = rpart.control(minsplit = 2, 
@@ -52,6 +53,7 @@ cp = cp_table %>%
   geom_hline(aes(yintercept = min(xerror)), linetype = "dashed") + 
   theme_bw() 
 
+# save cv plot
 ggsave(filename = "results/cp-cv-chart.png", 
        plot = cp, 
        device = "png", 
@@ -65,15 +67,15 @@ optimal_tree_info = cp_table %>%
   arrange(nsplit) %>% 
   head(1)
 
-optimal_tree_info$nsplit # 17 splits in the optimal tree - has node with 0 (weird!)
+optimal_tree_info$nsplit # 17 splits in the optimal tree - has node with 0 (probably due to rounding)
 
 # prune the optimal tree
-optimal_tree_info
 optimal_tree = prune(mental_health_fit_deep, cp = optimal_tree_info$CP)
 rpart.plot(optimal_tree)
 
 save(optimal_tree, file = "results/optimal_tree.Rda")
 
+# save optimal decision tree
 png(width = 11, 
     height = 8,
     res = 300,
@@ -82,24 +84,6 @@ png(width = 11,
 rpart.plot(optimal_tree)
 dev.off()
 
-# mean-square-error 
-pred_decision_test = predict(optimal_tree, 
-                        newdata = mental_health_test)
-
-pred_decision_train = predict(optimal_tree,
-                              newdata = mental_health_train)
-
-mse_decision_test = mean((pred_decision_test - mental_health_test$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-mse_decision_train = mean((pred_decision_train - mental_health_train$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-write_csv(mse_decision_test, 
-          file = "results/mse_decision_test.csv")
-
-write_csv(mse_decision_train, 
-          file = "results/mse_decision_train.csv")
 
 # Random Forests
 set.seed(1)
@@ -124,6 +108,7 @@ rf_cv = tibble(m = mvalues, oob_err = oob_errors) %>%
   scale_x_continuous(breaks = mvalues) +
   theme_bw()
 
+# save random forest cv plot
 png(width = 7, 
     height = 7,
     res = 300,
@@ -142,6 +127,7 @@ rf_fit_tuned = randomForest(mentally_unhealthy_days ~ . -physically_unhealthy_da
 
 save(rf_fit_tuned, file = "results/rf_fit_tuned.Rda")
 
+# save error plot for rf_fit_tuned
 png(width = 7, 
     height = 7,
     res = 300,
@@ -150,28 +136,8 @@ png(width = 7,
 plot(rf_fit_tuned)
 dev.off()
 
-# variable importance 
+# save variable importance plot
 png("varimp.png", width=8, height=4, res=300, units = "in")
 varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8,
            main = "Random Forest Importance") 
 dev.off()
-
-# mean-squared error
-pred_rf_test = predict(rf_fit_tuned, 
-                             newdata = mental_health_test)
-
-pred_rf_train = predict(rf_fit_tuned,
-                              newdata = mental_health_train)
-
-mse_rf_test = mean((pred_rf_test - mental_health_test$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-mse_rf_train = mean((pred_rf_train - mental_health_train$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-write_csv(mse_rf_test, 
-          file = "results/mse_rf_test.csv")
-
-write_csv(mse_rf_train, 
-          file = "results/mse_rf_train.csv")
-

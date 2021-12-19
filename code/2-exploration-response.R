@@ -11,7 +11,6 @@ health_total = read_csv("data/clean/health_data_clean.csv")
 
 # create histogram of mentally unhealthy days in dataset
 mean <- mean(mental_health_clean$mentally_unhealthy_days) # save the mean
-cutoff <- 4.5 # save the cutoff
 
 # plot mentally_unhealthy days and draw line at the mean
 p = mental_health_clean %>%
@@ -21,9 +20,6 @@ p = mental_health_clean %>%
   geom_vline(xintercept = mean,
              linetype = "dashed",
              col = "red") +
-  geom_vline(xintercept = cutoff,
-             linetype = "dashed",
-             col = "blue") +
   labs(x = "Mentally Unhealthy Days (Per Month)", 
        y = "Number of Counties") + 
   theme_bw() +
@@ -36,7 +32,7 @@ ggsave(filename = "results/response-histogram.png",
        width = 5, 
        height = 3)
 
-# create a heatmap of mentally unhealthy days for cleaned dataset (this is just showing what the data looks like)
+# create a heatmap of mentally unhealthy days for cleaned dataset
 p2 = map_data("county") %>%
   as_tibble() %>% 
   left_join(mental_health_clean %>% 
@@ -87,7 +83,7 @@ ggsave(filename = "results/map-total.png",
        width = 7, 
        height = 4)
 
-# create heatmap of highest mentally unhappy days 
+# West Virginia heat map
 wv = map_data("county") %>%
   as_tibble() %>%
   filter(region == "west virginia") %>%
@@ -114,6 +110,7 @@ ggsave(filename = "results/west-va.png",
        width = 7, 
        height = 4)
 
+# North Dakota heat map
 nd = map_data("county") %>%
   as_tibble() %>%
   filter(region == "north dakota") %>%

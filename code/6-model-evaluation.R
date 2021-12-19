@@ -100,6 +100,6 @@ tibble(Method = c("OLS", "Ridge", "Lasso", "Decision Tree", "Random Forest", "Bo
        `Test mse` = c(mse_test_lm, mse_test_ridge, mse_test_lasso, mse_decision_test ,mse_rf_test, mse_gbm_test)) %>%
   kable(format = "latex",
         booktabs = TRUE, 
-        digits = 4,
+        digits = 5,
         col.names = c("Model", "Train MSE", "Test MSE")) %>%
   save_kable("mse-all-models.pdf")

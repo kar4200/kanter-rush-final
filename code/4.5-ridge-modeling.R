@@ -33,10 +33,9 @@ png(width = 7,
 plot(ridge_fit)
 dev.off()
 
-# create lasso trace plot
+# save lasso trace plot
 p_ridge = plot_glmnet(ridge_fit, mental_health_train, 
                       features_to_plot = 10, lambda = ridge_fit$lambda.1se)
-
 ggsave(filename = "results/ridge-trace-plot.png", 
        plot = p_ridge, 
        device = "png", 
@@ -47,7 +46,7 @@ ggsave(filename = "results/ridge-trace-plot.png",
 beta_hat_std = extract_std_coefs(ridge_fit, mental_health_train, 
                                  lambda = ridge_fit$lambda.1se)
 
-# reminder when saving kable: set working dictionary to "results"
+# save top 10 feature coefficients
 beta_hat_std %>%
   filter(coefficient != 0) %>%
   arrange(desc(abs(coefficient))) %>%
@@ -57,30 +56,5 @@ beta_hat_std %>%
         col.names = c("Feature", "Coefficient")) %>%
   save_kable("ridge-coefficients.pdf")
 
-# optimal lambda value 
-lambda = ridge_fit$lambda.1se
-
-# visualize the fitted coefficients as a function of lambda
-predictions_test_ridge = predict(ridge_fit,              
-                        newdata = mental_health_test,  
-                        s = "lambda.1se") %>%   
-  as.numeric()    
-
-predictions_train_ridge = predict(ridge_fit,              
-                             newdata = mental_health_train,  
-                             s = "lambda.1se") %>%   
-  as.numeric() 
-
-# evaluating the classifier 
-mse_test_ridge = mean((predictions_test_ridge - 
-                         mental_health_test$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-mse_train_ridge = mean((predictions_train_ridge - mental_health_train$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-write_csv(mse_test_ridge, 
-          file = "results/mse_test_ridge.csv")
-
-write_csv(mse_train_ridge, 
-          file = "results/mse_train_ridge.csv")
+# optimal lambda value (0.0756)
+ridge_fit$lambda.1se 
