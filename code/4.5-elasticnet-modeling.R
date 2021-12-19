@@ -21,3 +21,5 @@ plot_cva_glmnet(elnet_fit)
 # optmal alpha 
 elnet_fit_best = extract_best_elnet(elnet_fit)
 elnet_fit_best$alpha
+
+# optimal alpha = 1, so do not continue with el-net regression (optimal = lasso)
