@@ -87,20 +87,14 @@ summary(gbm_fit_tuned, n.trees = optimal_num_trees, plotit = FALSE) %>%
     save_kable("boosting-rel-inf.pdf")
         
 # top three feaatures by relative influence
-png("partial1.png")
+png("partial1.png", width=5, height=4, res=300, units = "in")
 plot(gbm_fit_tuned, i.var = "perc_smokers", n.trees = optimal_num_trees,
      xlab = "Percent Smokers",
      main = "Partial Dependence Plot: Smoking")
 dev.off()
 
-png("partial2.png")
+png("partial2.png", width=5, height=4, res=300, units = "in")
 plot(gbm_fit_tuned, i.var = "household_income", n.trees = optimal_num_trees,
      xlab = "Household Income",
      main = "Partial Dependence Plot: Household Income")
-dev.off()
-
-png("partial3.png")
-plot(gbm_fit_tuned, i.var = "perc_insufficient_sleep", n.trees = optimal_num_trees,
-     xlab = "Percent Insufficient Sleep",
-     main = "Partial Dependence Plot: Insufficient Sleep")
 dev.off()
