@@ -32,27 +32,35 @@ mse_test_rf =
 mse_train_rf = 
   read_csv("results/mse_rf_train.csv")
 
+# Boosted 
+mse_test_gbm = 
+  read_csv("results/mse_gbm_test.csv")
+mse_train_gbm = 
+  read_csv("results/mse_gbm_train.csv")
+
 # creating table of misclassification errors 
-Model = c("Regression", "Ridge", "Lasso", "Decision", "Random Forest")
+Model = c("Regression", "Ridge", "Lasso", "Decision", "Random Forest", "Boosted")
 
 mse_test =  
    as_tibble(cbind(Model, rbind(mse_test_lm, 
                                 mse_test_lasso, 
                                 mse_test_lasso, 
                                 mse_test_decision, 
-                                mse_test_rf)))
+                                mse_test_rf, 
+                                mse_test_gbm)))
 
  
 mse_train = cbind(mse_train_lm, 
                   mse_train_lasso, 
                   mse_train_lasso, 
                   mse_train_decision, 
-                  mse_train_rf)
+                  mse_train_rf, 
+                  mse_train_gbm)
 
 colnames(mse_train) = Model
 
 mse_train = mse_train %>% 
-  pivot_longer(1:5, 
+  pivot_longer(1:6, 
                names_to = "Model", 
                values_to = "number")
 

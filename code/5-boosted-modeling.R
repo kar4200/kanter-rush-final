@@ -98,3 +98,27 @@ plot(gbm_fit_tuned, i.var = "household_income", n.trees = optimal_num_trees,
      xlab = "Household Income",
      main = "Partial Dependence Plot: Household Income")
 dev.off()
+
+# mean squared error - test 
+predictions_test_gbm = predict(gbm_fit_tuned, 
+                          n.trees = optimal_num_trees,
+                          newdata = mental_health_test)
+
+mse_gbm_test = mean((predictions_test_gbm - 
+                       mental_health_test$mentally_unhealthy_days)^2) %>%
+  as_tibble()
+
+write_csv(mse_gbm_test, 
+          file = "results/mse_gbm_test.csv")
+
+# mean squared error - train
+predictions_train_gbm = predict(gbm_fit_tuned, 
+                               n.trees = optimal_num_trees,
+                               newdata = mental_health_train)
+
+mse_gbm_train = mean((predictions_train_gbm - 
+                       mental_health_train$mentally_unhealthy_days)^2) %>%
+  as_tibble()
+
+write_csv(mse_gbm_train, 
+          file = "results/mse_gbm_train.csv")
