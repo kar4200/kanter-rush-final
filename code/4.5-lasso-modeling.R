@@ -21,12 +21,12 @@ lasso_fit = cv.glmnet(mentally_unhealthy_days ~. -physically_unhealthy_days,
 plot(lasso_fit)
 plot_glmnet(lasso_fit, mental_health_train, features_to_plot = 10, lambda = lasso_fit$lambda.1se)
 
-lasso_fit$nzero[lasso_fit$lambda == lasso_fit$lambda.1se]
+lasso_fit$nzero[lasso_fit$lambda == lasso_fit$lambda.1se] # 46 features selected
 
 # save the lasso fit object
 save(lasso_fit, file = "results/lasso_fit.Rda")
 
-# create lasso CV plot
+# save lasso CV plot
 png(width = 7, 
     height = 5,
     res = 300,
@@ -35,7 +35,7 @@ png(width = 7,
 plot(lasso_fit)
 dev.off()
 
-# create lasso trace plot
+# save lasso trace plot
 p_lasso = plot_glmnet(lasso_fit, mental_health_train, features_to_plot = 8)
 ggsave(filename = "results/lasso-trace-plot.png", 
        plot = p_lasso, 
@@ -46,7 +46,7 @@ ggsave(filename = "results/lasso-trace-plot.png",
 # extract features selected by lasso and their coefficients
 beta_hat_std = extract_std_coefs(lasso_fit, mental_health_train)
 
-# reminder when saving kable: set working dictionary to "results"
+# save top 10 feature coefficients
 beta_hat_std %>%
   filter(coefficient != 0) %>%
   arrange(desc(abs(coefficient))) %>%
@@ -56,27 +56,3 @@ beta_hat_std %>%
         col.names = c("Feature", "Coefficient")) %>%
   save_kable("lasso-coefficients.pdf")
 
-
-# visualize the fitted coefficients as a function of lambda
-predictions_test_lasso = predict(lasso_fit,              
-                        newdata = mental_health_test,  
-                        s = "lambda.1se") %>%   
-  as.numeric() 
-
-predictions_train_lasso = predict(lasso_fit,              
-                             newdata = mental_health_train,  
-                             s = "lambda.1se") %>%   
-  as.numeric()
-
-# rmse
-mse_test_lasso = mean((predictions_test_lasso - mental_health_test$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-mse_train_lasso = mean((predictions_train_lasso - mental_health_train$mentally_unhealthy_days)^2) %>%
-  as_tibble()
-
-write_csv(mse_test_lasso, 
-          file = "results/mse_test_lasso.csv")
-
-write_csv(mse_train_lasso, 
-          file = "results/mse_train_lasso.csv")
