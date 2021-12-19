@@ -13,6 +13,8 @@ lm_fit = lm(mentally_unhealthy_days ~ . -physically_unhealthy_days,
 
 summary(lm_fit)
 
+save(lm_fit, file = "results/lm_fit.Rda")
+
 ## extracting elements of the fit
 coef(lm_fit)
 

@@ -157,10 +157,10 @@ varImpPlot(rf_fit_tuned, n.var = 10, cex = 0.8,
 dev.off()
 
 # mean-squared error
-pred_rf_test = predict(rf_fit_tune, 
+pred_rf_test = predict(rf_fit_tuned, 
                              newdata = mental_health_test)
 
-pred_rf_train = predict(rf_fit_tune,
+pred_rf_train = predict(rf_fit_tuned,
                               newdata = mental_health_train)
 
 mse_rf_test = mean((pred_rf_test - mental_health_test$mentally_unhealthy_days)^2) %>%
