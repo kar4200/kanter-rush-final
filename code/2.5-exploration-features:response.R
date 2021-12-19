@@ -37,7 +37,7 @@ p11 = ggplot(data = mental_health_train,
   stat_smooth(method="lm", se=FALSE,
               color = "red") + 
   theme_bw() +
-  labs(x = "Percentage of adults that reported currently smoking", 
+  labs(x = "Percentage of Adults that Reported Currently Smoking", 
        y = "Mentally Unhealthy Days") +
   ggtitle("Smoking")
 
@@ -54,7 +54,7 @@ p13 = ggplot(data = mental_health_train,
                  y = mentally_unhealthy_days)) +
   geom_point() +
   geom_jitter() +
-  xlab("Mental Health Providers per 100,000 population") +
+  xlab("Mental Health Providers Per 100,000 Population") +
   ylab("Mentally Unhealthy Days") +
   stat_smooth(method="lm", se=FALSE,
               color = "red") + 
@@ -94,7 +94,7 @@ p16 = ggplot(data = mental_health_train,
                  y = mentally_unhealthy_days)) +
   geom_point() +
   geom_jitter() +
-  xlab("Percentage of households with overcrowding") +
+  xlab("Percentage of Households with Overcrowding") +
   ylab("Mentally Unhealthy Days") +
   stat_smooth(method="lm", se=FALSE, 
               color = "red") + 
@@ -113,7 +113,7 @@ p17 = ggplot(data = mental_health_train,
                  y = mentally_unhealthy_days)) +
   geom_point() +
   geom_jitter() +
-  xlab("Percentage of adults that reported excessive drinking") +
+  xlab("Percentage of Adults that Reported Excessive Drinking") +
   ylab("Mentally Unhealthy Days") +
   stat_smooth(method="lm", se=FALSE,
               color = "red") + 
