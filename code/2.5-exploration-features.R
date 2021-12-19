@@ -14,11 +14,12 @@ health_outcomes = mental_health_train %>%
          life_expectancy, perc_diabetic)
 
 p4 = ggcorrplot(cor(health_outcomes),
-                colors = c("blue", "white", "red"), 
+                colors = c("#305029", "#FFFFFF", "#8d1919"), 
                 hc.order = TRUE, 
                 type = "lower",
                 lab = TRUE,
                 lab_size = 4,
+                tl.cex = 8,
                 ggtheme = ggplot2::theme_bw())
 
 ggsave(filename = "results/corr-health_outcomes.png", 
@@ -36,7 +37,7 @@ health_behavior = mental_health_train %>%
          perc_insufficient_sleep, perc_food_insecure)
 
 p5 = ggcorrplot(cor(health_behavior),
-                colors = c("blue", "white", "red"), 
+                colors = c("#305029", "#FFFFFF", "#8d1919"), 
                 hc.order = TRUE, 
                 type = "lower",
                 lab = TRUE,
@@ -57,11 +58,11 @@ clinical_care = mental_health_train %>%
          perc_mammography_screened, perc_flu_vaccinated)
 
 p6 = ggcorrplot(cor(clinical_care),
-           colors = c("blue", "white", "red"),
+           colors = c("#305029", "#FFFFFF", "#8d1919"),
            hc.order = TRUE, 
            type = "lower",
            lab = TRUE,
-           lab_size = 3,
+           lab_size = 2,
            tl.cex = 8,
            ggtheme = ggplot2::theme_bw()) 
 
@@ -85,7 +86,8 @@ social_economic_environment = mental_health_train %>%
          persons_per_household, income_ratio,
          perc_with_access, perc_limited_access, food_environment_index)
 
-p7 = ggcorrplot(cor(social_economic_environment), 
+p7 = ggcorrplot(cor(social_economic_environment),
+           colors = c("#305029", "#FFFFFF", "#8d1919"),
            hc.order = FALSE, 
            type = "lower",
            lab = TRUE,
@@ -106,7 +108,7 @@ physical_environment = mental_health_train %>%
          perc_long_commute_drives_alone, perc_rural)
 
 p8 = ggcorrplot(cor(physical_environment),
-           colors = c("blue", "white", "red"), 
+           colors = c("#305029", "#FFFFFF", "#8d1919"), 
            hc.order = TRUE, 
            type = "lower",
            lab = TRUE,
