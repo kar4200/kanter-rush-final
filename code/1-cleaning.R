@@ -62,7 +62,7 @@ mental_health = left_join(mental_health,
 mental_health_clean = mental_health %>%  
   select(-c(`Years of Potential Life Lost Rate`, 
             `HIV Prevalence Rate`, 
-            starts_with("poverty"), `% LBW`, 
+            starts_with("poverty"), `% LBW`,  
             `% Frequent Mental Distress`, 
             `% Fair/Poor`, 
             `80th Percentile Income`,  
@@ -75,8 +75,7 @@ mental_health_clean = mental_health %>%
          prevent_hosp_rate = `Preventable Hosp. Rate`,
          perc_long_commute_drives_alone = `% Long Commute - Drives Alone`)
 
-# table to determine which columns to remove 
-colSums(is.na(mental_health_clean))
+# many of the columns removed above are removed b/c of large number of NA values
 
 # rename columns for tidyness 
 names(mental_health_clean) = gsub(pattern = "% ", replacement = "perc ", 
@@ -91,10 +90,8 @@ names(mental_health_clean) = gsub(pattern = "/", replacement = "_",
                                   x = names(mental_health_clean))
 names(mental_health_clean) = tolower(names(mental_health_clean))
 
-# create binary response variable (mentally unhealthy: yes or no)
-mental_health_clean %>% 
-  summarise(mean = mean(mentally_unhealthy_days))
-
+# summary stats
+mental_health_clean %>% summarise(mean = mean(mentally_unhealthy_days)) # 3.95
 min(mental_health_clean$mentally_unhealthy_days) # 2.5
 max(mental_health_clean$mentally_unhealthy_days) # 6
 sd(mental_health_clean$mentally_unhealthy_days) # 0.58
