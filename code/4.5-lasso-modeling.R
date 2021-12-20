@@ -19,9 +19,8 @@ lasso_fit = cv.glmnet(mentally_unhealthy_days ~. -physically_unhealthy_days,
 
 
 plot(lasso_fit)
-plot_glmnet(lasso_fit, mental_health_train, features_to_plot = 10, lambda = lasso_fit$lambda.1se)
 
-lasso_fit$nzero[lasso_fit$lambda == lasso_fit$lambda.1se] # 46 features selected
+lasso_fit$nzero[lasso_fit$lambda == lasso_fit$lambda.1se] # 49 features 
 
 # save the lasso fit object
 save(lasso_fit, file = "results/lasso_fit.Rda")
@@ -36,7 +35,10 @@ plot(lasso_fit)
 dev.off()
 
 # save lasso trace plot
-p_lasso = plot_glmnet(lasso_fit, mental_health_train, features_to_plot = 8)
+p_lasso = plot_glmnet(lasso_fit, 
+                      mental_health_train, 
+                      features_to_plot = 8)
+
 ggsave(filename = "results/lasso-trace-plot.png", 
        plot = p_lasso, 
        device = "png", 

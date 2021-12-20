@@ -84,7 +84,6 @@ png(width = 11,
 rpart.plot(optimal_tree)
 dev.off()
 
-
 # Random Forests
 set.seed(1)
 rf_fit = randomForest(mentally_unhealthy_days ~ . -physically_unhealthy_days,
@@ -102,6 +101,7 @@ for(idx in 1:length(mvalues)){
                              mtry = m, data = mental_health_train)
   oob_errors[idx] = rf_fit_tune$mse[ntree]
 }
+
 rf_cv = tibble(m = mvalues, oob_err = oob_errors) %>%
   ggplot(aes(x = m, y = oob_err)) + 
   geom_line() + geom_point() + 

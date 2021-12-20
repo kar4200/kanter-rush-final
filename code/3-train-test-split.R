@@ -1,4 +1,4 @@
-# read in the cleaned data
+# read in cleaned data
 mental_health_clean = read_csv("data/clean/mental_health_clean.csv")
 
 # set seed

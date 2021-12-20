@@ -20,8 +20,3 @@ coef(lm_fit)
 
 # r-squared value
 summary(lm_fit)$r.squared # 0.8274298
-
-# check for distribution and heteroscedasticity of the residuals to make sure we do not have to log data  
-hist(lm_fit$residuals)
-plot(lm_fit$residuals)
-

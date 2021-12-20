@@ -10,7 +10,7 @@ mental_health_clean = read_csv("data/clean/mental_health_clean.csv")
 health_total = read_csv("data/clean/health_data_clean.csv")
 
 # create histogram of mentally unhealthy days in dataset
-mean <- mean(mental_health_clean$mentally_unhealthy_days) # save the mean
+mean = mean(mental_health_clean$mentally_unhealthy_days) # save the mean
 
 # plot mentally_unhealthy days and draw line at the mean
 p = mental_health_clean %>%
@@ -38,7 +38,8 @@ p2 = map_data("county") %>%
   left_join(mental_health_clean %>% 
               rename(region = state, 
                      subregion = name,
-                     `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
+                     `Mentally Unhealthy Days` = 
+                       mentally_unhealthy_days) %>% 
               mutate(region = str_to_lower(region), 
                      subregion = str_to_lower(subregion)), 
             by = c("region", "subregion")) %>%
@@ -46,7 +47,8 @@ p2 = map_data("county") %>%
   geom_polygon(data=map_data("state"), 
                aes(x=long, y=lat, group=group),
                color="black", fill=NA,  size = 1, alpha = .3) + 
-  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+  geom_polygon(aes(x=long, y=lat, group=group, 
+                   fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
   scale_fill_gradient(low = "blue", high = "red") +
   theme_void() +
@@ -63,7 +65,8 @@ p3 = map_data("county") %>%
   left_join(health_total %>% 
               rename(region = state, 
                      subregion = name,
-                     `Mentally Unhealthy Days` = `Mentally Unhealthy Days`) %>% 
+                     `Mentally Unhealthy Days` = 
+                       `Mentally Unhealthy Days`) %>% 
               mutate(region = str_to_lower(region), 
                      subregion = str_to_lower(subregion)), 
             by = c("region", "subregion")) %>%
@@ -71,7 +74,8 @@ p3 = map_data("county") %>%
   geom_polygon(data=map_data("state"), 
                aes(x=long, y=lat, group=group),
                color="black", fill=NA,  size = 1, alpha = .3) + 
-  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+  geom_polygon(aes(x=long, y=lat, group=group, 
+                   fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
   scale_fill_gradient(low = "blue", high = "red") +
   theme_void() +
@@ -90,15 +94,18 @@ wv = map_data("county") %>%
   left_join(mental_health_clean %>% 
               rename(region = state, 
                      subregion = name,
-                     `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
+                     `Mentally Unhealthy Days` = 
+                       mentally_unhealthy_days) %>% 
               mutate(region = str_to_lower(region), 
                      subregion = str_to_lower(subregion)), 
             by = c("region", "subregion")) %>%
   ggplot() + 
-  geom_polygon(data=map_data("state") %>% filter(region == "west virginia"),
+  geom_polygon(data=map_data("state") %>% 
+                 filter(region == "west virginia"),
                aes(x=long, y=lat, group=group),
                color="black", fill=NA, size = 1, alpha = .3) + 
-  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+  geom_polygon(aes(x=long, y=lat, group=group, 
+                   fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
   scale_fill_gradient(low = "blue", high = "red") +
   theme_void() +
@@ -117,15 +124,18 @@ nd = map_data("county") %>%
   left_join(mental_health_clean %>% 
               rename(region = state, 
                      subregion = name,
-                     `Mentally Unhealthy Days` = mentally_unhealthy_days) %>% 
+                     `Mentally Unhealthy Days` = 
+                       mentally_unhealthy_days) %>% 
               mutate(region = str_to_lower(region), 
                      subregion = str_to_lower(subregion)), 
             by = c("region", "subregion")) %>%
   ggplot() + 
-  geom_polygon(data=map_data("state") %>% filter(region == "north dakota"),
+  geom_polygon(data=map_data("state") %>% 
+                 filter(region == "north dakota"),
                aes(x=long, y=lat, group=group),
                color="black", fill=NA, size = 1, alpha = .3) + 
-  geom_polygon(aes(x=long, y=lat, group=group, fill = `Mentally Unhealthy Days`),
+  geom_polygon(aes(x=long, y=lat, group=group, 
+                   fill = `Mentally Unhealthy Days`),
                color="darkblue", size = .1) +
   scale_fill_gradient(low = "blue", high = "red") +
   theme_void() +

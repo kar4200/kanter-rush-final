@@ -2,7 +2,7 @@
 library(tidyverse)
 library(ggcorrplot)
 
-# read in the cleaned data
+# read in cleaned data
 mental_health_clean = read_csv("data/clean/mental_health_clean.csv")
 
 # read in training data 
@@ -28,7 +28,7 @@ ggsave(filename = "results/corr-health_outcomes.png",
        width = 5, 
        height = 5)
 
-# correlated features - health-behavior
+# correlated features - health behavior
 health_behavior = mental_health_train %>% 
   select(perc_smokers, perc_obese,
          perc_physically_inactive, 
@@ -72,7 +72,7 @@ ggsave(filename = "results/corr-clinical-care.png",
        width = 5, 
        height = 5)
 
-# correlated features - social_environment
+# correlated features - social environment
 social_economic_environment = mental_health_train %>% 
   select(graduation_rate, perc_some_college, 
          perc_unemployed, perc_children_in_poverty, 
@@ -101,6 +101,7 @@ ggsave(filename = "results/corr-social-economic-environment.png",
        width = 6, 
        height = 6)
 
+# correlated features - physical environment
 physical_environment = mental_health_train %>% 
   select(average_daily_pm2.5, presence_of_violation, perc_severe_housing_cost_burden,
          perc_severe_housing_problems, 
