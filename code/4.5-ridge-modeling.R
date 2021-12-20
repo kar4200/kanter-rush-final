@@ -46,6 +46,9 @@ ggsave(filename = "results/ridge-trace-plot.png",
 beta_hat_std = extract_std_coefs(ridge_fit, mental_health_train, 
                                  lambda = ridge_fit$lambda.1se)
 
+# standard error - percent smokers 
+sd(mental_health_train$perc_smokers)
+
 # save top 10 feature coefficients
 beta_hat_std %>%
   filter(coefficient != 0) %>%
