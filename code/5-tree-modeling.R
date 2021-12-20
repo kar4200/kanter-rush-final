@@ -92,7 +92,7 @@ rf_fit$mtry
 
 # tune random forests
 set.seed(1)
-mvalues = seq.int(1, 60, by = 5)
+mvalues = seq.int(1, 59, by = 5)
 oob_errors = numeric(length(mvalues))
 ntree = 100
 for(idx in 1:length(mvalues)){
